@@ -4,8 +4,7 @@
     }
 </style>
 
-<script>
-    // @ts-check
+<script lang="ts">
     import { user } from "../../lib/pocketbase";
 </script>
 
