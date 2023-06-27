@@ -4,6 +4,22 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+    margin: 0;
+    background-color: black;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 a {
     text-decoration: none;
+}
+
+button {
+    background-color: transparent;
+    color: whitesmoke;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
 }

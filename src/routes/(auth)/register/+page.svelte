@@ -1,35 +1,24 @@
-
-<style lang="scss">
-    form {
-        label, button, input {
-            display: block;
-        }
-    }
-    .error {
-        white-space: pre-wrap;
-    }
-</style>
-
 <script lang="ts">
-    import { pb } from "../../lib/pocketbase"
+    import "../styles.scss"
+    import { pb } from "$lib/pocketbase"
     import { goto } from "$app/navigation"
 
 
-    let error
-    async function register_submit(event) {
-        const data = new FormData(this)
+    let error: string
+    async function register_submit(event: SubmitEvent) {
+        const data = new FormData(event.target as HTMLFormElement)
 
         pb.collection("users").create(Object.fromEntries(data.entries()))
             .then(async user_data => {
                 // login
                 await pb.collection("users").authWithPassword(
-                    data.get("email").toString(),
-                    data.get("password").toString()
+                    data.get("email")!.toString(),
+                    data.get("password")!.toString()
                 )
                 goto("/")
             })
             .catch(pb_err => {
-                error = JSON.stringify(pb_err.response.data, null, 4)
+                error = `Error: ${pb_err.response.message}\nDetails: ${JSON.stringify(pb_err.response.data, null, 4)}`
             })
     }
 </script>
@@ -49,5 +38,5 @@
         <input type="password" name="passwordConfirm">
     </label>
     <button>Register</button>
-    {#if error} <h3 class="error">Error: {error}</h3> {/if}
+    {#if error} <h3 class="error">{error}</h3> {/if}
 </form>
