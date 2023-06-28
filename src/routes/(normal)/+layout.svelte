@@ -18,7 +18,7 @@
             <li><a href="/register">/register</a></li>
             <li><a href="/profile">/profile</a></li>
             {#if $user}
-                <button style="border: none;" on:click={() => {pb.authStore.clear()}}>Logout</button>
+                <button on:click={() => {pb.authStore.clear()}}>Logout</button>
             {/if}
         </ul>
     </nav>

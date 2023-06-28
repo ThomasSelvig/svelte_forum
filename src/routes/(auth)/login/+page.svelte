@@ -34,3 +34,5 @@
     <button>Login</button>
     {#if error} <h3 class="error">{error}</h3> {/if}
 </form>
+
+<h3>No account? <a href="/register">Register here</a></h3>

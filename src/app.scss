@@ -14,12 +14,22 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: underline;
+    color: $link;
+    transition: all .1s;
+}
+a:hover {
+    color: $link_hover;
 }
 
 button {
     background-color: transparent;
     color: $text_light;
-    border: 2px solid $text_light;
+    border: 2px solid $link;
     border-radius: 10px;
+    transition: all .1s;
+    cursor: pointer;
+}
+button:hover {
+    border-color: $link_hover;
 }

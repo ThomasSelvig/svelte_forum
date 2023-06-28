@@ -6,8 +6,8 @@
         width: 50%;
         height: 100vh;
         background-image: url(https://picsum.photos/960/1080);
-        // background-image: url(https://picsum.photos/1000);
         background-size: cover;
+        background-position: center;
         filter: brightness(.7);
     }
 
