@@ -1,9 +1,50 @@
 /* Variables and mixins declared here will be available in all other SCSS files */
 
-$text_light: whitesmoke;
-$bg_dark: #181a1b;
+// for media breakpoints
+$base_font_size: 20px;
+$nav_font_size: 25px;
+// $nav_icon_font_size: 30px;
+$nav_icon_font_size: $nav_font_size;
+// $breakpoints: (
+//     small: 576px,
+//     medium: 768px,
+//     large: 992px,
+//     x-large: 1200px
+// );
+$breakpoints: (
+  small: 36rem,
+  medium: 48rem,
+  large: 62rem,
+  x-large: 75rem
+);
+@mixin breakpoint($point) {
+    @if map-has-key($breakpoints, $point) {
+        // $breakpoint_value: map-get($breakpoints, $point) * $base_font_size;
+        $breakpoint_value: map-get($breakpoints, $point);
 
-$link: darkorchid;
+        @media (min-width: $breakpoint_value) {
+            @content;
+        }
+    } @else {
+        @error "Invalid breakpoint: #{$point}.";
+    }
+}
+
+// palette from https://coolors.co/f8ffe5-06d6a0-1b9aaa-ef476f-ffc43d
+/* SCSS HEX */
+$light-yellow: #f8ffe5ff;
+$emerald: #06d6a0ff;
+$blue-munsell: #1b9aaaff;
+$bright-pink-crayola: #ef476fff;
+$amber: #ffc43dff;
+
+$background: $light-yellow;
+$text: #181a1b;
+
+$link: $blue-munsell;
+
+// $text: whitesmoke;
+// $background: #181a1b;
+
+// $link: darkorchid;
 $link_hover: lighten($link, 15%);
-// $link_hover: orchid;
-// $links: darkcyan;

@@ -14,8 +14,8 @@
     main {
         width: 50%;
         height: 100vh;
-        background-color: $bg_dark;
-        color: $text_light;
+        background-color: $background;
+        color: $text;
         display: block;
     }
 
