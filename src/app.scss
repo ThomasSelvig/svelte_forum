@@ -6,6 +6,10 @@
 
 body {
     margin: 0;
+    @include breakpoint(large) {
+        padding: 0 2rem;
+    }
+
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -21,7 +25,8 @@ body {
 }
 
 a {
-    text-decoration: underline;
+    // text-decoration: underline;
+    text-decoration: none;
     color: $link;
     transition: all .1s;
 }
@@ -34,6 +39,7 @@ button {
     border: 2px solid $link;
     border-radius: 10px;
     transition: all .1s;
+    color: $text;
     cursor: pointer;
 
     &:hover {
@@ -42,9 +48,13 @@ button {
 
     &.text {
         border: none;
+        &:hover {
+            color: $link_hover;
+        }
     }
+}
 
-    &.icon {
-        color: $link;
-    }
+.icon {
+    font-size: $nav_icon_font_size;
+    color: $link;
 }

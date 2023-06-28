@@ -1,21 +1,16 @@
 <style lang="scss">
     header, footer, main {
         width: 100%;
-        margin: 0 auto;
+        margin: 1rem auto;
 
         @include breakpoint(small) { max-width: map-get($map: $breakpoints, $key: small); }
         @include breakpoint(medium) { max-width: map-get($map: $breakpoints, $key: medium); }
         @include breakpoint(large) { max-width: map-get($map: $breakpoints, $key: large); }
         // @include breakpoint(x-large) { max-width: map-get($map: $breakpoints, $key: x-large); }
-
-        .icon {
-            font-size: $nav_icon_font_size;
-        }
     }
     nav {
         display: flex;
         justify-content: space-around;
-        font-size: $nav_font_size;
 
         ul {
             list-style: none;
@@ -36,6 +31,16 @@
             }
         }
     }
+
+    main {
+        padding: 1rem;
+        background-color: $main_background;
+
+        &.container {
+            margin: 0 1rem;
+        }
+    }
+
     footer {
         margin-top: auto;
         padding: 1rem;

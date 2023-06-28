@@ -30,21 +30,31 @@ $breakpoints: (
     }
 }
 
-// palette from https://coolors.co/f8ffe5-06d6a0-1b9aaa-ef476f-ffc43d
 /* SCSS HEX */
-$light-yellow: #f8ffe5ff;
-$emerald: #06d6a0ff;
-$blue-munsell: #1b9aaaff;
-$bright-pink-crayola: #ef476fff;
-$amber: #ffc43dff;
+// $light-yellow: #f8ffe5ff;
+// $emerald: #06d6a0ff;
+// $blue-munsell: #1b9aaaff;
+// $bright-pink-crayola: #ef476fff;
+// $amber: #ffc43dff;
+// $background: $light-yellow;
+// $text: #181a1b;
+// $link: $bright-pink-crayola;
 
-$background: $light-yellow;
-$text: #181a1b;
+$gunmetal: #2d3a3aff;
+$cobalt-blue: #1446a0ff;
+$razzmatazz: #db3069ff;
+$naples-yellow: #f5d547ff;
+$ivory: #F6F7EB;
+$onyx: #3c3c3bff;
 
-$link: $blue-munsell;
+$background: $gunmetal;
+$main_background: $onyx;
+$text: $ivory;
+$link: $razzmatazz;
+$link_hover: $naples-yellow;
 
 // $text: whitesmoke;
 // $background: #181a1b;
 
 // $link: darkorchid;
-$link_hover: lighten($link, 15%);
+// $link_hover: lighten($link, 15%);
