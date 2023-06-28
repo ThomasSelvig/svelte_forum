@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
     import { pb } from "$lib/pocketbase"
-    import "../styles.scss"
+    import "../layout.scss"
 
 
     let error: string

@@ -6,14 +6,16 @@
         width: 50%;
         height: 100vh;
         background-image: url(https://picsum.photos/960/1080);
+        // background-image: url(https://picsum.photos/1000);
+        background-size: cover;
         filter: brightness(.7);
     }
 
     main {
         width: 50%;
         height: 100vh;
-        background-color: #181a1b;
-        color: white;
+        background-color: $bg_dark;
+        color: $text_light;
         display: block;
     }
 
