@@ -1,9 +1,10 @@
 
 <script lang="ts">
+	import { browser } from "$app/environment";
 	import { goto } from "$app/navigation";
     import { pb, user } from "$lib/pocketbase"
 
-    if (!$user) {
+    if (!$user && browser) {
         goto("/login")
     }
 </script>
