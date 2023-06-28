@@ -33,17 +33,13 @@
     }
 
     main {
-        padding: 1rem;
+        padding: 1rem 2rem;
         background-color: $main_background;
-
-        &.container {
-            margin: 0 1rem;
-        }
     }
 
     footer {
         margin-top: auto;
-        padding: 1rem;
+        padding: 1rem 2rem;
 
         h2 {
             text-align: center;
@@ -72,7 +68,7 @@
         <ul class="site_nav">
             <li><a href="/" class="icon"><MdiHome /></a></li>
             <li><a href="/forums">FORUMS</a></li>
-            <li><a href="/forums">GENERAL</a></li>
+            <li><a href="/forums/ognd6a5vqg5vno5">GENERAL</a></li>
         </ul>
         <ul class="account_nav">
             {#if $user}
