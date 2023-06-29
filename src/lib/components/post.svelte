@@ -4,16 +4,28 @@
         display: flex;
         justify-content: space-between;
 
-        span {
+        & > span {
             flex-basis: 100%;
+
+            .rating {
+                display: inline-block;
+                padding: 0 .33rem;
+            }
+
+            .ratings {
+                background-color: $alt_background;
+                padding: .5rem;
+                vertical-align: middle;
+            }
         }
     }
 </style>
 
 <script lang="ts">
     import type { ExpandRecord } from "$lib/pocketbase"
-	import type { Record } from "pocketbase";
-	import { fade } from "svelte/transition";
+    import MdiThumbsUpDown from '~icons/mdi/thumbs-up-down'
+    import MdiEye from '~icons/mdi/eye'
+    import MdiComment from '~icons/mdi/comment'
 
     export let post: ExpandRecord
     export let show_forum = false;
@@ -33,13 +45,29 @@
             return rtf.format(-diffInMinutes, 'minute');
         }
     }
+
 </script>
 
 <article class="post">
-    <span>{post.title}</span>
-    <!-- <span>{JSON.stringify(post.expand)}</span> -->
+    <span><a href={`/forums/${post.forum}/${post.id}`}>{post.title}</a></span>
     <span>
-        By {post.expand?.author.username}
+        <span class="ratings">
+            <span class="rating">
+                7
+                <MdiThumbsUpDown />
+            </span>
+            <!-- <span class="rating">
+                60
+                <MdiEye />
+            </span> -->
+            <span class="rating">
+                15
+                <MdiComment />
+            </span>
+        </span>
+    </span>
+    <span>
+        {post.expand?.author.username}
         {#if show_forum}in <a href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a> {/if}
     </span>
     <span>Updated {calculateTimeDifference(post.updated)}</span>
