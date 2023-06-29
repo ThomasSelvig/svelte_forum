@@ -6,9 +6,9 @@
 
 body {
     margin: 0;
-    @include breakpoint(large) {
-        padding: 0 2rem;
-    }
+    // @include breakpoint(large) {
+    //     padding: 0 2rem;
+    // }
 
     min-height: 100vh;
     display: flex;
