@@ -34,7 +34,6 @@
 
     main {
         padding: 1rem 2rem;
-        background-color: $main_background;
     }
 
     footer {
@@ -48,8 +47,6 @@
 </style>
 
 <script lang="ts">
-	import { browser } from "$app/environment"
-	import { goto } from "$app/navigation"
     import { pb, user } from "$lib/pocketbase"
 
     import MdiHome from '~icons/mdi/home'
@@ -58,9 +55,6 @@
     import MdiAccountBox from "~icons/mdi/account-box"
     import MdiLogout from '~icons/mdi/logout'
 
-    if (!$user && browser) {
-        // goto("/login")
-    }
 </script>
 
 <header>
