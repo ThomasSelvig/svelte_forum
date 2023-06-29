@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
     import { pb } from "$lib/pocketbase"
-    import "../layout.scss"
+    import "../auth_components.scss"
 
 
     let error: string

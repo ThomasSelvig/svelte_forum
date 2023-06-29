@@ -1,13 +1,8 @@
-<style>
-    .category {
-        margin: 1rem;
-    }
-</style>
-
 <script lang="ts">
     import { pb, type ExpandRecord } from "$lib/pocketbase"
+	import type { Record } from "pocketbase";
 
-    async function get_forums_by_category(): Promise<ExpandRecord[]> {
+    async function get_forums_by_category(): Promise<ExpandRecord<Record[]>[]> {
         return pb.collection("forum_categories").getFullList({
             sort: "-id",
             expand: "forums(category)"

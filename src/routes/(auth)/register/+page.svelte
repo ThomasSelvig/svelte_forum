@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "../layout.scss"
+    import "../auth_components.scss"
     import { pb } from "$lib/pocketbase"
     import { goto } from "$app/navigation"
 

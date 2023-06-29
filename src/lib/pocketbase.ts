@@ -6,11 +6,10 @@ import { PUBLIC_PB_HOST } from "$env/static/public"
 import type { Record } from "pocketbase";
 
 
-export interface ExpandRecordSingle extends Omit<Record, "expand"> {
-    expand: {[some_expand:string]: Record}
-}
-export interface ExpandRecord extends Omit<Record, "expand"> {
-    expand: {[some_expand:string]: Record[]}
+// default: expand=single (only one Record)
+// if expand is of type multiple, use ExpandRecord<Record[]> to get expand=array of Records
+export interface ExpandRecord<T = Record> extends Omit<Record, "expand"> {
+    expand: {[some_expand: string]: T}
 }
 
 export const pb = new PocketBase(PUBLIC_PB_HOST)
