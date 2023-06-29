@@ -54,7 +54,7 @@
         <span class="ratings">
             <span class="rating">
                 7
-                <MdiThumbsUpDown />
+                <MdiThumbsUpDown class="icon" />
             </span>
             <!-- <span class="rating">
                 60
@@ -62,7 +62,7 @@
             </span> -->
             <span class="rating">
                 15
-                <MdiComment />
+                <MdiComment class="icon" />
             </span>
         </span>
     </span>
