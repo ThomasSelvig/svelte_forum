@@ -21,7 +21,7 @@
         <section class="category">
             <h3>{category.name}</h3>
             {#each category.expand["forums(category)"] as forum}
-                <p><a href={`/forums/${forum.id}`}>{forum.name}</a></p>
+                <p><a data-sveltekit-preload-data="hover" href={`/forums/${forum.id}`}>{forum.name}</a></p>
             {/each}
         </section>
     {/each}
