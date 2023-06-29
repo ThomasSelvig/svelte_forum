@@ -48,6 +48,7 @@ button {
 
     &.text {
         border: none;
+        color: $link;
         &:hover {
             color: $link_hover;
         }

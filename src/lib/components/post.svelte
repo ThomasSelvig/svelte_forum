@@ -13,7 +13,7 @@
             }
 
             .ratings {
-                background-color: $alt_background;
+                background-color: $main_background;
                 padding: .5rem;
                 vertical-align: middle;
             }

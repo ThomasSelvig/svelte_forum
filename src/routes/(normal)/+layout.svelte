@@ -1,5 +1,5 @@
 <style lang="scss">
-    header, footer, main {
+    header, footer > .content, main {
         width: 100%;
         margin: 1rem auto;
 
@@ -39,8 +39,9 @@
     footer {
         margin-top: auto;
         padding: 1rem 2rem;
+        background-color: $alt-background;
 
-        h2 {
+        .content {
             text-align: center;
         }
     }
@@ -83,5 +84,7 @@
 </main>
 
 <footer>
-    <h2>Footer</h2>
+    <div class="content">
+        <h3><a href="https://github.com/ThomasSelvig">Follow my GitHub</a></h3>
+    </div>
 </footer>
