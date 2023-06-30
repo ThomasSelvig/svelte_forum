@@ -1,12 +1,11 @@
 <script lang="ts">
-    import { pb, type ExpandRecord } from "$lib/pocketbase"
-	import type { ForumCategoriesResponse, ForumsRecord, ForumsResponse } from "$lib/pocketbase-types";
+    import { pb } from "$lib/pocketbase"
+	import type { ForumCategoriesResponse, ForumsResponse } from "$lib/pocketbase-types";
 	import type { Record } from "pocketbase";
 
-    // async function get_forums_by_category(): Promise<ExpandRecord<Record[]>[]> {
-    async function get_forums_by_category(): Promise<ForumCategoriesResponse<{
-        "forums(category)": ForumsResponse[] //| any  // any required bc svelte-check no TS support
-    }>[]> {
+    async function get_forums_by_category(): Promise<
+        ForumCategoriesResponse<{ "forums(category)": ForumsResponse[] }>[]
+    > {
         return pb.collection("forum_categories").getFullList({
             sort: "-id",
             expand: "forums(category)"

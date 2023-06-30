@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { pb, type ExpandRecord } from "$lib/pocketbase"
+    import { pb } from "$lib/pocketbase"
     import Post from "$lib/components/post.svelte"
+	import type { ForumsResponse, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
 
     async function get_latest_posts() {
         return pb.collection("posts").getList(1, 20, {
             expand: "forum,author",
             sort: "-updated"
-        })
-            .then(r => r.items) as Promise<ExpandRecord[]>
+        }).then(r => r.items as unknown as PostsResponse<{author: UsersResponse, forum: ForumsResponse}>[])
     }
 </script>
 

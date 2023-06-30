@@ -13,19 +13,19 @@
 </style>
 
 <script lang="ts">
-    import Dump from '$lib/components/dump.svelte';
-	import { pb, user, type ExpandRecord } from '$lib/pocketbase';
+	import { pb } from '$lib/pocketbase';
+	import type { CommentsResponse, RecordIdString } from '$lib/pocketbase-types';
     import type { PageData } from './$types';
     
     export let data: PageData;
     const { post } = data
 
-    async function get_comments(post: string) {
+    async function get_comments(post: RecordIdString) {
         return pb.collection("comments").getList(1, 20, {
             sort: "+created",
             expand: "author",
             filter: `post = "${post}"`
-        }).then(r => r.items as ExpandRecord[])
+        }).then(r => r.items as unknown as CommentsResponse[])
     }
 </script>
 

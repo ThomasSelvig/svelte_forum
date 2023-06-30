@@ -22,15 +22,15 @@
 </style>
 
 <script lang="ts">
-    import type { ExpandRecord } from "$lib/pocketbase"
     import MdiThumbsUpDown from '~icons/mdi/thumbs-up-down'
     import MdiEye from '~icons/mdi/eye'
     import MdiComment from '~icons/mdi/comment'
+	import type { ForumsResponse, IsoDateString, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
 
-    export let post: ExpandRecord
+    export let post: PostsResponse<{author: UsersResponse, forum: ForumsResponse | any}>
     export let show_forum = false;
 
-    const calculateTimeDifference = (date: string) => {
+    const calculateTimeDifference = (date: IsoDateString) => {
         const diffInMinutes = Math.floor((Date.now() - (new Date(date)).getTime()) / 1000 / 60);
         const diffInHours = Math.floor(diffInMinutes / 60);
         const diffInDays = Math.floor(diffInHours / 24);
