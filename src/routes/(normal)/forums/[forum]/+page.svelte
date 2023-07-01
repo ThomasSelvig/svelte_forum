@@ -3,33 +3,32 @@
     import Post from "$lib/components/post.svelte"
     import type { PageData } from './$types'
     import MdiArrowRight from "~icons/mdi/arrow-right"
-	import type { ForumsResponse, PostsResponse, UsersResponse } from "$lib/pocketbase-types"
+	import type { PostsResponse, RecordIdString, UsersResponse } from "$lib/pocketbase-types"
     import Modal from "$lib/components/Modal.svelte"
-    import MicroModal from "micromodal"
 	import { writable } from "svelte/store"
 	import type { ListResult } from "pocketbase"
+	import { get_data_entries } from "$lib/form_helpers";
+    import MicroModal from "micromodal"
     
     export let data: PageData
     let { forum } = data
 
-    let posts = writable(get_posts(forum))
-    async function get_posts(forum: ForumsResponse) {
-        // await new Promise(r => setTimeout(r, 3000))  // simulate loading
+    let posts = writable(get_posts(forum.id))
+    async function get_posts(forum: RecordIdString) {
         return pb.collection("posts").getList(1, 20, {
-            filter: `forum = "${forum.id}"`,
+            filter: `forum = "${forum}"`,
             expand: "author",
             sort: "-updated"
-        }) as Promise<ListResult<PostsResponse<{author: UsersResponse, forum: any}>>>
+        }) as Promise<ListResult<PostsResponse<{author: UsersResponse}>>>
     }
     
 
     let error: string
     async function submit_post(e: SubmitEvent) {
-        const data = Object.fromEntries((new FormData(e.target as HTMLFormElement)).entries())
-        pb.collection("posts").create(data)
+        pb.collection("posts").create(get_data_entries(e))
             .then(r => {
-                MicroModal.close()
-                posts.set(get_posts(forum))
+                MicroModal.close("write-post-modal")
+                posts.set(get_posts(forum.id))
             })
             .catch(err => {
                 error = err.toString()
@@ -39,7 +38,7 @@
 </script>
 
 
-<Modal title="Write Post">
+<Modal title="Write Post" modal_id="write-post-modal">
     <form method="post" on:submit|preventDefault={submit_post}>
         <label>
             Title *
