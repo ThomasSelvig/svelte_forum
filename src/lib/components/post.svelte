@@ -6,6 +6,7 @@
 
         & > span {
             // flex-basis: 100%;  // set to give all equal columns
+            flex-basis: 20%;
             &:nth-child(1) {
                 flex-basis: 40%;
             }

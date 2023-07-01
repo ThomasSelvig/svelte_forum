@@ -62,3 +62,29 @@ button {
         color: $link;
     }
 }
+
+form {
+    & * {
+        display: block;
+    }
+
+    label {
+        margin: 1rem 0;
+    }
+
+    input, button, textarea {
+        margin-top: .5rem;
+
+        padding: .33rem .5rem;
+        width: 100%;
+    }
+
+    button {
+        margin-top: 1rem;
+        padding: .5rem 0;
+    }
+
+    textarea {
+        resize: none;
+    }
+}

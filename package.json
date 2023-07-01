@@ -16,6 +16,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
 		"@sveltejs/vite-plugin-svelte": "^2.4.2",
+		"@types/node": "^20.3.3",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
@@ -30,6 +31,7 @@
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.60.1",
 		"@typescript-eslint/parser": "^5.60.1",
+		"micromodal": "^0.4.10",
 		"pocketbase": "^0.15.2",
 		"svelte-check": "^3.4.4",
 		"tslib": "^2.6.0",

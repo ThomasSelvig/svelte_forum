@@ -48,9 +48,9 @@ $onyx: #3c3c3bff;
 $dark-blue: #14213D;
 
 $background: #181a1b;
-$main_background: #333533;
+$main_background: #272727;//$gunmetal;//#333533;
 // $main_background: $onyx;
-$alt_background: darken($main-background, 14%);
+$alt_background: darken($main_background, 14%);
 $text: #E5E5E5;
 
 $link: $razzmatazz;
