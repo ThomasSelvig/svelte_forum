@@ -2,7 +2,7 @@
     import { pb } from "$lib/pocketbase"
     import Post from "$lib/components/post.svelte"
 	import type { ForumsResponse, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
-	import { writable, type Updater } from "svelte/store";
+	import { writable } from "svelte/store";
 	import type { ListResult } from "pocketbase";
 
     let posts = writable(get_latest_posts())
@@ -13,9 +13,9 @@
         }) as Promise<ListResult<PostsResponse<{author: UsersResponse, forum: ForumsResponse}>>>
     }
 
-    pb.collection("posts").subscribe("*", _ => {
-        $posts = get_latest_posts()
-    })
+    // pb.collection("posts").subscribe("*", _ => {
+    //     $posts = get_latest_posts()
+    // })
 </script>
 
 <h1>Latest posts</h1>
