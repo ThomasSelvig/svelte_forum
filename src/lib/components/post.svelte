@@ -29,28 +29,13 @@
     import MdiThumbsUpDown from '~icons/mdi/thumbs-up-down'
     import MdiEye from '~icons/mdi/eye'
     import MdiComment from '~icons/mdi/comment'
-	import type { ForumsResponse, IsoDateString, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
+	import type { ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
+	import { calc_time_diff } from '$lib/helpers';
 
-    export let post: PostsResponse<
-        {author: UsersResponse, forum: ForumsResponse} |
-        {author: UsersResponse}
+    export let post: PostsPublicResponse<
+        {author: UsersPublicResponse, forum: ForumsResponse} |
+        {author: UsersPublicResponse}
     >
-
-    const calculateTimeDifference = (date: IsoDateString) => {
-        const diffInMinutes = Math.floor((Date.now() - (new Date(date)).getTime()) / 1000 / 60);
-        const diffInHours = Math.floor(diffInMinutes / 60);
-        const diffInDays = Math.floor(diffInHours / 24);
-
-        const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-
-        if (diffInDays > 0) {
-            return rtf.format(-diffInDays, 'day');
-        } else if (diffInHours > 0) {
-            return rtf.format(-diffInHours, 'hour');
-        } else {
-            return rtf.format(-diffInMinutes, 'minute');
-        }
-    }
 
 </script>
 
@@ -59,7 +44,7 @@
     <span>
         <span class="ratings">
             <span class="rating">
-                7
+                {post.score}
                 <MdiThumbsUpDown class="icon" />
             </span>
             <!-- <span class="rating">
@@ -67,7 +52,7 @@
                 <MdiEye />
             </span> -->
             <span class="rating">
-                15
+                {post.comments_count}
                 <MdiComment class="icon" />
             </span>
         </span>
@@ -76,5 +61,5 @@
         {post.expand?.author.username}
         {#if post.expand && "forum" in post.expand}in <a href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a> {/if}
     </span>
-    <span>Updated {calculateTimeDifference(post.updated)}</span>
+    <span>Updated {calc_time_diff(post.updated)}</span>
 </article>

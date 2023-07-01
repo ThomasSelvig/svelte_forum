@@ -1,7 +1,7 @@
 <style lang="scss">@use "../auth_components.scss";</style>
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { get_data_entries } from "$lib/form_helpers";
+	import { get_data_entries } from "$lib/helpers";
     import { pb } from "$lib/pocketbase"
 
 
