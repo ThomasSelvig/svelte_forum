@@ -41,6 +41,7 @@
     - you can preload every page by `export const prerender = true` in root +layout.ts
     - can also deploy as many prerendered pages as possible as static site with https://github.com/sveltejs/kit/tree/master/packages/adapter-static
     - loading data in `load()` is important, for one because it caches: https://kit.svelte.dev/docs/load#rerunning-load-functions
+    - data exported from `load()` cannot be promises. i.e. you cannot export a promise and then {#await} it. `load()` will always resolve your promises and is designed to load data before .svelte. you cannot, in other words, preload a {#await} expecting it to cancel if you click the page before preload finished.
 
 ## useful
 
