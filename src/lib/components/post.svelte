@@ -5,7 +5,10 @@
         justify-content: space-between;
 
         & > span {
-            flex-basis: 100%;
+            // flex-basis: 100%;  // set to give all equal columns
+            &:nth-child(1) {
+                flex-basis: 40%;
+            }
 
             .rating {
                 display: inline-block;
