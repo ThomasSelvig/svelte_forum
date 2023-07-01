@@ -1,18 +1,3 @@
-<style lang="scss">
-    .title_bar {
-        margin: 1rem 0 2rem 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .title_bar > h2 {
-        margin: 0;
-    }
-    .title_bar > button {
-        padding: 0 2rem;
-    }
-</style>
-
 <script lang="ts">
     import { pb, user } from "$lib/pocketbase"
     import Post from "$lib/components/post.svelte"
@@ -72,18 +57,18 @@
 </Modal>
 
 <div class="title_bar">
-    <h2>
+    <h1>
         {#if forum.expand}{forum.expand.category.name}{/if}
         <MdiArrowRight class="icon" />
         {forum.name}
-    </h2>
+    </h1>
     {#if $user}
         <button data-micromodal-trigger="write-post-modal"><h2>Write Post</h2></button>
     {/if}
 </div>
 
 {#await $posts}
-    <h3>loading...</h3>
+    <h2>loading...</h2>
 {:then postslist}
     {#each postslist.items as post}
         <Post {post} />

@@ -14,16 +14,16 @@
 
 </script>
 
-<h2>Forums</h2>
+<h1>Forums</h1>
 
 {#await get_forums_by_category()}
-    <h3>loading...</h3>
+    <h2>loading...</h2>
 {:then categories} 
 
     {#each categories as category (category.id)}
         {@const forums = category.expand?.["forums(category)"]}
         <section class="category">
-            <h3>{category.name}</h3>
+            <h2>{category.name}</h2>
             {#if forums}
             {#each forums as forum}
                 <p><a data-sveltekit-preload-data="hover" href={`/forums/${forum.id}`}>{forum.name}</a></p>
@@ -33,5 +33,5 @@
     {/each}
 
 {:catch error}
-    <h3>error: {error}</h3>
+    <h2>error: {error}</h2>
 {/await}

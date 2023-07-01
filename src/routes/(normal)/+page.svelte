@@ -18,10 +18,10 @@
     })
 </script>
 
-<h2>Latest posts</h2>
+<h1>Latest posts</h1>
 
 {#await $posts}
-    <h3>loading...</h3>
+    <h2>loading...</h2>
 {:then postslist}
     {#each postslist.items as post}
         <Post {post} show_forum={true} />

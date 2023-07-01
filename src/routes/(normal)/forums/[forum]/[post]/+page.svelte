@@ -13,7 +13,7 @@
 </style>
 
 <script lang="ts">
-	import { pb } from '$lib/pocketbase';
+	import { pb, user } from '$lib/pocketbase';
 	import type { CommentsResponse, RecordIdString } from '$lib/pocketbase-types';
 	import type { ListResult } from 'pocketbase';
     import type { PageData } from './$types';
@@ -30,9 +30,16 @@
     }
 </script>
 
-<h1>Post</h1>
+
+<div class="title_bar">
+    <h1>Post</h1>
+    {#if $user}
+        <button data-micromodal-trigger="write-post-modal"><h2>Write Comment</h2></button>
+    {/if}
+</div>
+
 <article class="post">
-    <h2>{post.title}</h2>
+    <h3>{post.title}</h3>
     <p>{post.body}</p>
 </article>
 <section class="comments">

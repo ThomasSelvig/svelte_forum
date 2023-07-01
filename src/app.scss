@@ -88,3 +88,18 @@ form {
         resize: none;
     }
 }
+
+
+.title_bar {
+    margin: 1rem 0 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > *:nth-child(1) {  // the title heading
+        margin: 0
+    }
+    & > button {
+        padding: 0 2rem;
+    }
+}
