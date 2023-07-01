@@ -1,7 +1,7 @@
 <script lang="ts">
     import { pb } from "$lib/pocketbase"
     import Post from "$lib/components/post.svelte"
-	import type { ForumsResponse, PostsResponse, UsersResponse } from "../../lib/pocketbase-types";
+	import type { ForumsResponse, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
 	import { writable, type Updater } from "svelte/store";
 	import type { ListResult } from "pocketbase";
 
