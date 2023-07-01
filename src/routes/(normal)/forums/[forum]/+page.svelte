@@ -14,9 +14,9 @@
     let { forum } = data
 
     let posts = writable(get_posts(forum.id))
-    async function get_posts(forum: RecordIdString) {
+    async function get_posts(forum_id: RecordIdString) {
         return pb.collection("posts").getList(1, 20, {
-            filter: `forum = "${forum}"`,
+            filter: `forum = "${forum_id}"`,
             expand: "author",
             sort: "-updated"
         }) as Promise<ListResult<PostsResponse<{author: UsersResponse}>>>
