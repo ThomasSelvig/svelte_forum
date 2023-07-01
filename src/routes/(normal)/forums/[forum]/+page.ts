@@ -4,7 +4,7 @@ import type { ForumCategoriesResponse, ForumsResponse } from '$lib/pocketbase-ty
 
 export const load = (async ({ params }) => {
     return {
-        forum: await pb.collection("forums")
-            .getOne(params.forum, {expand: "category"})
-    } as {forum: ForumsResponse<{category: ForumCategoriesResponse}>}
+        forum: pb.collection("forums").getOne(params.forum, {expand: "category"}) as
+            Promise<ForumsResponse<{category: ForumCategoriesResponse}>>
+    }
 }) satisfies PageLoad

@@ -15,6 +15,7 @@
 <script lang="ts">
 	import { pb } from '$lib/pocketbase';
 	import type { CommentsResponse, RecordIdString } from '$lib/pocketbase-types';
+	import type { ListResult } from 'pocketbase';
     import type { PageData } from './$types';
     
     export let data: PageData;
@@ -25,7 +26,7 @@
             sort: "+created",
             expand: "author",
             filter: `post = "${post}"`
-        }).then(r => r.items as unknown as CommentsResponse[])
+        }) as Promise<ListResult<CommentsResponse>>
     }
 </script>
 
@@ -39,11 +40,10 @@
     {#await get_comments(post.id)}
         <h3>Loading...</h3>
     {:then comments} 
-        {#each comments as comment}
+        {#each comments.items as comment}
             <div class="comment">
                 <span>{comment.comment}</span>
             </div>
         {/each}
     {/await}
 </section>
-<!-- <Dump {data} /> -->
