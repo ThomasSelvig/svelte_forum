@@ -1,13 +1,13 @@
 <script lang="ts">
     import { pb, user } from "$lib/pocketbase"
-    import Post from "$lib/components/post.svelte"
+    import Post from "$lib/components/Post.svelte"
     import type { PageData } from './$types'
     import MdiArrowRight from "~icons/mdi/arrow-right"
-	import type { PostsResponse, RecordIdString, UsersResponse } from "$lib/pocketbase-types"
+	import type { PostsPublicResponse, RecordIdString, UsersPublicResponse } from "$lib/pocketbase-types"
     import Modal from "$lib/components/Modal.svelte"
 	import { writable } from "svelte/store"
 	import type { ListResult } from "pocketbase"
-	import { get_data_entries } from "$lib/form_helpers";
+	import { get_data_entries } from "$lib/helpers";
     import MicroModal from "micromodal"
     
     export let data: PageData
@@ -15,11 +15,11 @@
 
     let posts = writable(get_posts(forum.id))
     async function get_posts(forum_id: RecordIdString) {
-        return pb.collection("posts").getList(1, 20, {
+        return pb.collection("posts_public").getList(1, 20, {
             filter: `forum = "${forum_id}"`,
             expand: "author",
             sort: "-updated"
-        }) as Promise<ListResult<PostsResponse<{author: UsersResponse}>>>
+        }) as Promise<ListResult<PostsPublicResponse<{author: UsersPublicResponse}>>>
     }
     
 

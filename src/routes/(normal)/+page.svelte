@@ -1,16 +1,16 @@
 <script lang="ts">
     import { pb } from "$lib/pocketbase"
-    import Post from "$lib/components/post.svelte"
-	import type { ForumsResponse, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
+    import Post from "$lib/components/Post.svelte"
+	import type { ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
 	import { writable } from "svelte/store";
 	import type { ListResult } from "pocketbase";
 
     let posts = writable(get_latest_posts())
     async function get_latest_posts() {
-        return pb.collection("posts").getList(1, 20, {
+        return pb.collection("posts_public").getList(1, 20, {
             expand: "forum,author",
             sort: "-updated"
-        }) as Promise<ListResult<PostsResponse<{author: UsersResponse, forum: ForumsResponse}>>>
+        }) as Promise<ListResult<PostsPublicResponse<{author: UsersPublicResponse, forum: ForumsResponse}>>>
     }
 
     // pb.collection("posts").subscribe("*", _ => {

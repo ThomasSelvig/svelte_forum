@@ -1,10 +1,10 @@
 import type { PageLoad } from './$types'
 import { pb } from "$lib/pocketbase"
-import type { ForumsResponse, PostsResponse, UsersResponse } from '$lib/pocketbase-types'
+import type { ForumsResponse, PostsPublicResponse, UsersPublicResponse } from '$lib/pocketbase-types'
 
 export const load = (async ({ params }) => {
     return {
-        post: await pb.collection("posts")
+        post: await pb.collection("posts_public")
             .getOne(params.post, {expand: "author,forum"})
-    } as {post: PostsResponse<{author: UsersResponse, forum: ForumsResponse}>}
+    } as {post: PostsPublicResponse<{author: UsersPublicResponse, forum: ForumsResponse}>}
 }) satisfies PageLoad

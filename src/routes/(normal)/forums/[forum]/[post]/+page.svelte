@@ -9,15 +9,23 @@
     .comments {
         margin: 2rem 0 0 0;
     }
+    .meta {
+        flex-basis: 40%;
+        display: flex;
+        justify-content: space-between;
+        & * {
+            flex-basis: 33%;
+        }
+    }
 </style>
 
 <script lang="ts">
 	import { pb, user } from '$lib/pocketbase';
-	import type { CommentsResponse, RecordIdString } from '$lib/pocketbase-types';
+	import type { CommentsPublicResponse, RecordIdString } from '$lib/pocketbase-types';
 	import type { ListResult } from 'pocketbase';
     import type { PageData } from './$types';
 	import Modal from '$lib/components/Modal.svelte';
-	import { get_data_entries } from '$lib/form_helpers';
+	import { calc_time_diff, get_data_entries } from '$lib/helpers';
 	import { writable } from 'svelte/store';
     import MicroModal from "micromodal"
     
@@ -26,11 +34,11 @@
 
     let comments = writable(get_comments(post.id))
     async function get_comments(post: RecordIdString) {
-        return pb.collection("comments").getList(1, 20, {
+        return pb.collection("comments_public").getList(1, 20, {
             sort: "+created",
             expand: "author",
             filter: `post = "${post}"`
-        }) as Promise<ListResult<CommentsResponse>>
+        }) as Promise<ListResult<CommentsPublicResponse>>
     }
 
     let error: string
@@ -68,7 +76,14 @@
 </div>
 
 <article class="post">
-    <h3>{post.title}</h3>
+    <div class="title_bar">
+        <h3>{post.title}</h3>
+        <div class="meta">
+            <span>By {post.expand?.author.username}</span>
+            <span>In {post.expand?.forum.name}</span>
+            <span>{calc_time_diff(post.updated)}</span>
+        </div>
+    </div>
     <p>{post.body}</p>
 </article>
 <section class="comments">
