@@ -1,7 +1,7 @@
+<style lang="scss">@use "../auth_components.scss";</style>
 <script lang="ts">
 	import { goto } from "$app/navigation";
     import { pb } from "$lib/pocketbase"
-    import "../auth_components.scss"
 
 
     let error: string

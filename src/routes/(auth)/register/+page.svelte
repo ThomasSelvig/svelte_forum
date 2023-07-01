@@ -1,5 +1,5 @@
+<style lang="scss">@use "../auth_components.scss";</style>
 <script lang="ts">
-    import "../auth_components.scss"
     import { pb } from "$lib/pocketbase"
     import { goto } from "$app/navigation"
 
