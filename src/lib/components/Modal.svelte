@@ -1,12 +1,23 @@
 <style lang="scss">
-    #write-post-modal {
+    [data-modal] {
+        // visibility
         display: none;
-        position: fixed;
         &.is-open {
-            display: block;
+            display: flex;
         }
+        // positioning
+        position: fixed;
         width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        // center
+        justify-content: center;
+        align-items: center;
 
+        background-color: transparentize($background, 0.5);
+
+        // main modal content
         & > div {
             background-color: $main_background;
             margin: 0 auto;
@@ -34,22 +45,35 @@
 	import { onMount } from "svelte";
 
     export let title: string
+    export let modal_id: string
 
     onMount(() => {
-        MicroModal.init()
-        MicroModal.close("write-post-modal")
+        MicroModal.init({
+            onClose: (modal: Element) => {
+                // clear input fields
+                for (let field of (
+                    modal.querySelector("form") as HTMLFormElement)
+                        .elements as unknown as any[]
+                ) {
+                    if (field.type != "hidden") {
+                        field.value = ""
+                    }
+                }
+            }
+        })
+        MicroModal.close(modal_id)
     })
 </script>
 
 
-<div id="write-post-modal" class="is-open" aria-hidden="true">
-    <div tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+<div id={modal_id} data-modal class="is-open" aria-hidden="true">
+    <div tabindex="-1" role="dialog" aria-modal="true" aria-labelledby={`${modal_id}-title`}>
         
         <div class="modal-heading">
-            <h2 id="modal-1-title">{title}</h2>
+            <h2 id={`${modal_id}-title`}>{title}</h2>
             <button aria-label="Close modal" data-micromodal-close class="text">Close</button>
         </div>
-        <div id="modal-1-content">
+        <div id={`${modal_id}-content`}>
             <slot />
         </div>
 
