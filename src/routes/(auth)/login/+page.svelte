@@ -1,16 +1,17 @@
 <style lang="scss">@use "../auth_components.scss";</style>
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { get_data_entries } from "$lib/form_helpers";
     import { pb } from "$lib/pocketbase"
 
 
     let error: string
-    async function login_submit(event: SubmitEvent) {
-        const data = new FormData(event.target as HTMLFormElement)
+    async function login_submit(e: SubmitEvent) {
+        const data = get_data_entries(e)
 
         pb.collection("users").authWithPassword(
-            data.get("email")!.toString(),
-            data.get("password")!.toString()
+            data.email.toString(),
+            data.password.toString()
         )
             .then(user_data => {
                 goto("/")

@@ -2,18 +2,19 @@
 <script lang="ts">
     import { pb } from "$lib/pocketbase"
     import { goto } from "$app/navigation"
+	import { get_data_entries } from "$lib/form_helpers";
 
 
     let error: string
-    async function register_submit(event: SubmitEvent) {
-        const data = new FormData(event.target as HTMLFormElement)
+    async function register_submit(e: SubmitEvent) {
+        const data = get_data_entries(e)
 
-        pb.collection("users").create(Object.fromEntries(data.entries()))
+        pb.collection("users").create(data)
             .then(async user_data => {
                 // login
                 await pb.collection("users").authWithPassword(
-                    data.get("email")!.toString(),
-                    data.get("password")!.toString()
+                    data.email.toString(),
+                    data.password.toString()
                 )
                 goto("/")
             })
