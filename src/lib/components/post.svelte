@@ -31,8 +31,10 @@
     import MdiComment from '~icons/mdi/comment'
 	import type { ForumsResponse, IsoDateString, PostsResponse, UsersResponse } from "$lib/pocketbase-types";
 
-    export let post: PostsResponse<{author: UsersResponse, forum: ForumsResponse | any}>
-    export let show_forum = false;
+    export let post: PostsResponse<
+        {author: UsersResponse, forum: ForumsResponse} |
+        {author: UsersResponse}
+    >
 
     const calculateTimeDifference = (date: IsoDateString) => {
         const diffInMinutes = Math.floor((Date.now() - (new Date(date)).getTime()) / 1000 / 60);
@@ -72,7 +74,7 @@
     </span>
     <span>
         {post.expand?.author.username}
-        {#if show_forum}in <a href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a> {/if}
+        {#if post.expand && "forum" in post.expand}in <a href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a> {/if}
     </span>
     <span>Updated {calculateTimeDifference(post.updated)}</span>
 </article>

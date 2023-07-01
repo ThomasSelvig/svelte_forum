@@ -24,7 +24,7 @@
     <h2>loading...</h2>
 {:then postslist}
     {#each postslist.items as post}
-        <Post {post} show_forum={true} />
+        <Post {post} />
     {/each}
     
 {/await}
