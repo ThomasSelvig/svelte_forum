@@ -34,11 +34,13 @@
 
     let comments = writable(get_comments(post.id))
     async function get_comments(post: RecordIdString) {
-        return pb.collection("comments_public").getList(1, 20, {
+        return pb.collection("comments_public").getList<
+            CommentsPublicResponse<{author: UsersPublicResponse}>
+        >(1, 20, {
             sort: "+created",
             expand: "author",
             filter: `post = "${post}"`
-        }) as Promise<ListResult<CommentsPublicResponse<{author: UsersPublicResponse}>>>
+        })
     }
 
     let error: string

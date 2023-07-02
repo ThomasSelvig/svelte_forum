@@ -33,6 +33,7 @@
 	import { calc_time_diff } from '$lib/helpers';
 
     export let post: PostsPublicResponse<
+        unknown,
         {author: UsersPublicResponse, forum: ForumsResponse} |
         {author: UsersPublicResponse}
     >

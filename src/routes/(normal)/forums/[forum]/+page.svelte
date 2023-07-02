@@ -15,11 +15,13 @@
 
     let posts = writable(get_posts(forum.id))
     async function get_posts(forum_id: RecordIdString) {
-        return pb.collection("posts_public").getList(1, 20, {
+        return pb.collection("posts_public").getList<
+            PostsPublicResponse<unknown, {author: UsersPublicResponse}>
+        >(1, 20, {
             filter: `forum = "${forum_id}"`,
             expand: "author",
             sort: "-updated"
-        }) as Promise<ListResult<PostsPublicResponse<{author: UsersPublicResponse}>>>
+        })
     }
     
 

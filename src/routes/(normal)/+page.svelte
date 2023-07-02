@@ -7,7 +7,7 @@
     let posts = writable(get_latest_posts())
     async function get_latest_posts() {
         return pb.collection("posts_public").getList<
-            PostsPublicResponse<{author: UsersPublicResponse, forum: ForumsResponse}>
+            PostsPublicResponse<unknown, {author: UsersPublicResponse, forum: ForumsResponse}>
         > (1, 20, {
             expand: "forum,author",
             sort: "-updated"
