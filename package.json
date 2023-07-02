@@ -6,8 +6,8 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write .",
+		"lint": "prettier --plugin-search-dir . --check src/ && eslint .",
+		"format": "prettier --plugin-search-dir . --write src/",
 		"typegen": "npx pocketbase-typegen --db ./pb/pb_data/data.db --out src/lib/pocketbase-types.ts"
 	},
 	"devDependencies": {
