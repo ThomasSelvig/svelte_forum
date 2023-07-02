@@ -3,7 +3,6 @@
     import Post from "$lib/components/Post.svelte"
 	import type { ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
 	import { writable } from "svelte/store";
-	import type { ListResult } from "pocketbase";
 
     let posts = writable(get_latest_posts())
     async function get_latest_posts() {
