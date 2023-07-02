@@ -45,6 +45,16 @@
             text-align: center;
         }
     }
+
+    .overlays {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+        top: 0;
+        left: 0;
+        width: 95vw;
+        height: 95vh;
+    }
 </style>
 
 <script lang="ts">
@@ -54,9 +64,40 @@
     import MdiBell from '~icons/mdi/bell'
     import MdiMessage from '~icons/mdi/message'
     import MdiAccountBox from "~icons/mdi/account-box"
+    import MdiPerson from "~icons/mdi/person"
     import MdiLogout from '~icons/mdi/logout'
+	import ContextDropdownModal from "$lib/components/ContextDropdownModal.svelte";
 
+    let notifs: ContextDropdownModal
+    let notifs_button: HTMLElement
+
+    let account: ContextDropdownModal
+    let account_button: HTMLElement
 </script>
+
+<div class="overlays">
+    <ContextDropdownModal bind:this={notifs} relative_to={notifs_button}>
+        <li>notif 1</li>
+        <li>notif 2</li>
+        <li>notif 3</li>
+        <li>notif 4</li>
+    </ContextDropdownModal>
+    <ContextDropdownModal bind:this={account} relative_to={account_button}>
+        <li>
+            <a href={`/user/${$user?.id}`}>
+                <span class="icon"><MdiPerson /></span>
+                Profile
+            </a>
+        </li>
+        <li>
+            <button class="text" on:click={() => {pb.authStore.clear()}}>
+                <span class="icon"><MdiLogout /></span>
+                Logout
+            </button>
+        </li>
+    </ContextDropdownModal>
+</div>
+
 
 <header>
     <nav>
@@ -67,10 +108,9 @@
         </ul>
         <ul class="account_nav">
             {#if $user}
-                <li><button class="icon text"><MdiBell /></button></li>
+                <li><button on:click={notifs.toggle} bind:this={notifs_button} class="icon text"><MdiBell /></button></li>
                 <li><button class="icon text"><MdiMessage  /></button></li>
-                <li><button class="icon text"><MdiAccountBox /></button></li>
-                <li><button class="icon text" on:click={() => {pb.authStore.clear()}}><MdiLogout /></button></li>
+                <li><button on:click={account.toggle} bind:this={account_button} class="icon text"><MdiAccountBox /></button></li>
             {:else}
                 <li><a data-sveltekit-preload-data="hover" href="/login">LOGIN</a></li>
                 <li><a data-sveltekit-preload-data="hover" href="/register">REGISTER</a></li>

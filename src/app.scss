@@ -41,6 +41,8 @@ button {
     transition: all .1s;
     color: $text;
     cursor: pointer;
+    font-size: $base-font-size;
+    padding: 0;
 
     &:hover {
         border-color: $link_hover;
