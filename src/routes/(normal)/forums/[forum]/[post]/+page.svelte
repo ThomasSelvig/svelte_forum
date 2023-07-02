@@ -21,7 +21,7 @@
 
 <script lang="ts">
 	import { pb, user } from '$lib/pocketbase';
-	import type { CommentsPublicResponse, RecordIdString } from '$lib/pocketbase-types';
+	import type { CommentsPublicResponse, RecordIdString, UsersPublicResponse } from '$lib/pocketbase-types';
 	import type { ListResult } from 'pocketbase';
     import type { PageData } from './$types';
 	import Modal from '$lib/components/Modal.svelte';
@@ -38,7 +38,7 @@
             sort: "+created",
             expand: "author",
             filter: `post = "${post}"`
-        }) as Promise<ListResult<CommentsPublicResponse>>
+        }) as Promise<ListResult<CommentsPublicResponse<{author: UsersPublicResponse}>>>
     }
 
     let error: string

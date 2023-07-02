@@ -5,6 +5,8 @@ import type { ForumsResponse, PostsPublicResponse, UsersPublicResponse } from '$
 export const load = (async ({ params }) => {
     return {
         post: await pb.collection("posts_public")
-            .getOne(params.post, {expand: "author,forum"})
-    } as {post: PostsPublicResponse<{author: UsersPublicResponse, forum: ForumsResponse}>}
+            .getOne
+                <PostsPublicResponse<unknown, {author: UsersPublicResponse, forum: ForumsResponse}>>
+                (params.post, {expand: "author,forum"})
+    }
 }) satisfies PageLoad
