@@ -27,5 +27,4 @@
     {#each postslist.items as post}
         <Post {post} />
     {/each}
-    
 {/await}
