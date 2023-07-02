@@ -3,6 +3,9 @@
         padding: 1rem;
         background: $main_background;
     }
+    .post > .title_bar {
+        margin-bottom: 1rem;
+    }
     .comment {
         margin: 1rem 0;
     }
@@ -15,6 +18,7 @@
         justify-content: space-between;
         & * {
             flex-basis: 33%;
+            text-align: center;
         }
     }
 </style>
@@ -81,12 +85,12 @@
     <div class="title_bar">
         <h3>{post.title}</h3>
         <div class="meta">
-            <span>By {post.expand?.author.username}</span>
-            <span>In {post.expand?.forum.name}</span>
+            <span>By <a href={`/user/${post.expand?.author.id}`}>{post.expand?.author.username}</a></span>
+            <span>In <a href=".">{post.expand?.forum.name}</a></span>
             <span>{calc_time_diff(post.updated)}</span>
         </div>
     </div>
-    <p>{post.body}</p>
+    {#if post.body}<p>{post.body}</p>{/if}
 </article>
 
 <section class="comments">
