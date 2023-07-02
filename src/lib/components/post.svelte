@@ -41,7 +41,7 @@
 </script>
 
 <article class="post">
-    <span><a href={`/forums/${post.forum}/${post.id}`}>{post.title}</a></span>
+    <span><a data-sveltekit-preload-data="hover" href={`/forums/${post.forum}/${post.id}`}>{post.title}</a></span>
     <span>
         <span class="ratings">
             <span class="rating">
@@ -60,7 +60,9 @@
     </span>
     <span>
         {post.expand?.author.username}
-        {#if post.expand && "forum" in post.expand}in <a href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a> {/if}
+        {#if post.expand && "forum" in post.expand}
+            in <a data-sveltekit-preload-data="hover" href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a>
+        {/if}
     </span>
     <span>Updated {calc_time_diff(post.updated)}</span>
 </article>

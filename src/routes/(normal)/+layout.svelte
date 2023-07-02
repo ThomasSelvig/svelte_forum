@@ -61,9 +61,9 @@
 <header>
     <nav>
         <ul class="site_nav">
-            <li><a href="/" class="icon"><MdiHome /></a></li>
-            <li><a href="/forums">FORUMS</a></li>
-            <li><a href="/forums/ognd6a5vqg5vno5">GENERAL</a></li>
+            <li><a data-sveltekit-preload-data="hover" href="/" class="icon"><MdiHome /></a></li>
+            <li><a data-sveltekit-preload-data="hover" href="/forums">FORUMS</a></li>
+            <li><a data-sveltekit-preload-data="hover" href="/forums/ognd6a5vqg5vno5">GENERAL</a></li>
         </ul>
         <ul class="account_nav">
             {#if $user}
@@ -72,8 +72,8 @@
                 <li><button class="icon text"><MdiAccountBox /></button></li>
                 <li><button class="icon text" on:click={() => {pb.authStore.clear()}}><MdiLogout /></button></li>
             {:else}
-                <li><a href="/login" data-sveltekit-preload-data="hover">LOGIN</a></li>
-                <li><a href="/register" data-sveltekit-preload-data="hover">REGISTER</a></li>
+                <li><a data-sveltekit-preload-data="hover" href="/login">LOGIN</a></li>
+                <li><a data-sveltekit-preload-data="hover" href="/register">REGISTER</a></li>
             {/if}
         </ul>
     </nav>
