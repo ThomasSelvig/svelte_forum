@@ -22,12 +22,12 @@
 <script lang="ts">
 	import { pb, user } from '$lib/pocketbase';
 	import type { CommentsPublicResponse, RecordIdString, UsersPublicResponse } from '$lib/pocketbase-types';
-	import type { ListResult } from 'pocketbase';
     import type { PageData } from './$types';
 	import Modal from '$lib/components/Modal.svelte';
 	import { calc_time_diff, get_data_entries } from '$lib/helpers';
 	import { writable } from 'svelte/store';
     import MicroModal from "micromodal"
+	import Loading from '$lib/components/Loading.svelte';
     
     export let data: PageData;
     const { post } = data
@@ -88,11 +88,10 @@
     </div>
     <p>{post.body}</p>
 </article>
+
 <section class="comments">
-    <h2>Comments</h2>
-    {#await $comments}
-        <h3>Loading...</h3>
-    {:then comments} 
+    <h2>Comments {#await $comments}<Loading />{/await}</h2>
+    {#await $comments then comments}
         {#each comments.items as comment}
             <div class="comment">
                 <span>{comment.comment}</span>

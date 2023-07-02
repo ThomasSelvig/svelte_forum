@@ -6,10 +6,6 @@
 - replace "Category -> Forum" with proper breadcrumbs
 - implement pagination wherever i use .getList
 
-- show real ratings
-- make all `pb` data load calls in load() with preload=hover for links (remember not to "await" in preload, but instead export a promise and then {#await} in .svelte)
-- "write post" and "write comment" buttons
-
 ## what i've learned
 - TS may be overkill and some prefer JSDoc over all else: maybe replace TS with JSDoc next project
 - if using TS, use pocketbase-typegen on npm

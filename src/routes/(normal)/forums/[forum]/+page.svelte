@@ -6,9 +6,9 @@
 	import type { PostsPublicResponse, RecordIdString, UsersPublicResponse } from "$lib/pocketbase-types"
     import Modal from "$lib/components/Modal.svelte"
 	import { writable } from "svelte/store"
-	import type { ListResult } from "pocketbase"
 	import { get_data_entries } from "$lib/helpers";
     import MicroModal from "micromodal"
+	import Loading from "$lib/components/Loading.svelte";
     
     export let data: PageData
     let { forum } = data
@@ -62,15 +62,14 @@
         {#if forum.expand}{forum.expand.category.name}{/if}
         <MdiArrowRight class="icon" />
         {forum.name}
+        {#await $posts}<Loading />{/await}
     </h1>
     {#if $user}
         <button data-micromodal-trigger="write-post-modal"><h2>Write Post</h2></button>
     {/if}
 </div>
 
-{#await $posts}
-    <h2>loading...</h2>
-{:then postslist}
+{#await $posts then postslist}
     {#each postslist.items as post}
         <Post {post} />
     {/each}
