@@ -65,6 +65,7 @@
             })
     }
 
+    // uses the set `$comment`
     async function edit_comment(e: SubmitEvent) {
         const data = get_data_entries(e)
         pb.collection("comments").update(data.id.toString(), {
@@ -78,6 +79,16 @@
                 error = err.toString()
             })
     }
+
+    // uses the set `$comment`
+    async function delete_comment() {
+        pb.collection("comments").delete($editing_comment.id)
+            .then(r => {
+                $comments = get_comments(post.id)
+            })
+    }
+
+    
 </script>
 
 
@@ -148,7 +159,10 @@
                             <MdiEdit />
                         </button>
     
-                        <button class="text icon"><MdiDelete /></button>
+                        <button class="text icon" on:click={() => {
+                            $editing_comment = comment
+                            delete_comment()
+                        }}><MdiDelete /></button>
                     </span>
                 {/if}
             </div>
