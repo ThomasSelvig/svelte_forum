@@ -1,8 +1,7 @@
 <style lang="scss">
-    [data-modal] {
+    dialog {
         // visibility
-        display: none;
-        &.is-open {
+        &[open] {
             display: flex;
         }
         // positioning
@@ -15,7 +14,9 @@
         justify-content: center;
         align-items: center;
 
+        color: white;
         background-color: transparentize($background, 0.5);
+        border: none;
 
         // main modal content
         & > div {
@@ -41,41 +42,34 @@
 </style>
 
 <script lang="ts">
-    import MicroModal from "micromodal"
-	import { onMount } from "svelte";
-
     export let title: string
-    export let modal_id: string
 
-    onMount(() => {
-        MicroModal.init({
-            onClose: (modal: Element) => {
-                // clear input fields
-                for (let field of (
-                    modal.querySelector("form") as HTMLFormElement)
-                        .elements as unknown as any[]
-                ) {
-                    if (field.type != "hidden") {
-                        field.value = ""
-                    }
+    let dialog: HTMLDialogElement
+    export function get_dialog() { return dialog }
+
+    function on_close() {
+        // clear input fields
+        let form = dialog.querySelector("form") as HTMLFormElement
+        if (form) {
+            for (let field of form.elements as unknown as any[]) {
+                if (field.type != "hidden") {
+                    field.value = ""
                 }
             }
-        })
-        MicroModal.close(modal_id)
-    })
+        }
+    }
+
 </script>
 
 
-<div id={modal_id} data-modal class="is-open" aria-hidden="true">
-    <div tabindex="-1" role="dialog" aria-modal="true" aria-labelledby={`${modal_id}-title`}>
-        
+<dialog bind:this={dialog} on:close={on_close}>
+    <div>
         <div class="modal-heading">
-            <h2 id={`${modal_id}-title`}>{title}</h2>
-            <button aria-label="Close modal" data-micromodal-close class="text">Close</button>
+            <h2>{title}</h2>
+            <button aria-label="Close modal" class="text" on:click={() => {dialog.close()}}>Close</button>
         </div>
-        <div id={`${modal_id}-content`}>
+        <div>
             <slot />
         </div>
-
     </div>
-</div>
+</dialog>

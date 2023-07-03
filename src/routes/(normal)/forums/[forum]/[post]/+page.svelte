@@ -26,18 +26,21 @@
 
 <script lang="ts">
 	import { pb, user } from '$lib/pocketbase';
-	import type { CommentsPublicResponse, RecordIdString, UsersPublicResponse } from '$lib/pocketbase-types';
+	import type { CommentsPublicResponse, CommentsResponse, RecordIdString, UsersPublicResponse } from '$lib/pocketbase-types';
     import type { PageData } from './$types';
 	import Modal from '$lib/components/Modal.svelte';
 	import { calc_time_diff, get_data_entries } from '$lib/helpers';
 	import { writable } from 'svelte/store';
-    import MicroModal from "micromodal"
 	import Loading from '$lib/components/Loading.svelte';
     import MdiEdit from "~icons/mdi/edit"
     import MdiDelete from "~icons/mdi/delete"
     
     export let data: PageData;
     const { post } = data
+
+    let write_comment_modal: Modal
+    let edit_comment_modal: Modal
+    let editing_comment = writable<CommentsResponse>()
 
     let comments = writable(get_comments(post.id))
     async function get_comments(post: RecordIdString) {
@@ -54,7 +57,21 @@
     async function submit_comment(e: SubmitEvent) {
         pb.collection("comments").create(get_data_entries(e))
             .then(r => {
-                MicroModal.close("write-comment-modal")
+                write_comment_modal.get_dialog().close()
+                $comments = get_comments(post.id)
+            })
+            .catch(err => {
+                error = err.toString()
+            })
+    }
+
+    async function edit_comment(e: SubmitEvent) {
+        const data = get_data_entries(e)
+        pb.collection("comments").update(data.id.toString(), {
+            comment: data.comment.toString()
+        })
+            .then(r => {
+                edit_comment_modal.get_dialog().close()
                 $comments = get_comments(post.id)
             })
             .catch(err => {
@@ -64,7 +81,7 @@
 </script>
 
 
-<Modal title="Write Comment" modal_id="write-comment-modal">
+<Modal title="Write Comment" bind:this={write_comment_modal}>
     <form method="post" on:submit|preventDefault={submit_comment}>
         <label>
             Comment *
@@ -77,10 +94,24 @@
     </form>
 </Modal>
 
+<Modal title="Edit Comment" bind:this={edit_comment_modal}>
+    <form method="post" on:submit|preventDefault={edit_comment}>
+        <label>
+            Comment *
+            <textarea name="comment" rows="5">{$editing_comment?.comment}</textarea>
+        </label>
+        <input type="hidden" name="id" value={$editing_comment?.id}>
+        <button>Submit</button>
+        {#if error}<p class="error">{error}</p>{/if}
+    </form>
+</Modal>
+
 <div class="title_bar">
     <h1>Post</h1>
     {#if $user}
-        <button data-micromodal-trigger="write-comment-modal"><h2>Write Comment</h2></button>
+        <button on:click={() => {
+            write_comment_modal.get_dialog().showModal()
+        }}><h2>Write Comment</h2></button>
     {/if}
 </div>
 
@@ -108,6 +139,18 @@
         {#each comments.items as comment}
             <div class="comment">
                 <span>{comment.comment}</span>
+                {#if $user?.id == comment.author}
+                    <span>
+                        <button class="text icon" on:click={() => {
+                            $editing_comment = comment
+                            edit_comment_modal.get_dialog().showModal()
+                        }}>
+                            <MdiEdit />
+                        </button>
+    
+                        <button class="text icon"><MdiDelete /></button>
+                    </span>
+                {/if}
             </div>
         {/each}
     {/await}

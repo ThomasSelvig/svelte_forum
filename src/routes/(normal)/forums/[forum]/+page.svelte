@@ -7,11 +7,12 @@
     import Modal from "$lib/components/Modal.svelte"
 	import { writable } from "svelte/store"
 	import { get_data_entries } from "$lib/helpers";
-    import MicroModal from "micromodal"
 	import Loading from "$lib/components/Loading.svelte";
     
     export let data: PageData
     let { forum } = data
+
+    let write_post_modal: Modal
 
     let posts = writable(get_posts(forum.id))
     async function get_posts(forum_id: RecordIdString) {
@@ -29,7 +30,7 @@
     async function submit_post(e: SubmitEvent) {
         pb.collection("posts").create(get_data_entries(e))
             .then(r => {
-                MicroModal.close("write-post-modal")
+                write_post_modal.get_dialog().close()
                 posts.set(get_posts(forum.id))
             })
             .catch(err => {
@@ -40,7 +41,7 @@
 </script>
 
 
-<Modal title="Write Post" modal_id="write-post-modal">
+<Modal title="Write Post" bind:this={write_post_modal}>
     <form method="post" on:submit|preventDefault={submit_post}>
         <label>
             Title *
@@ -65,7 +66,7 @@
         {#await $posts}<Loading />{/await}
     </h1>
     {#if $user}
-        <button data-micromodal-trigger="write-post-modal"><h2>Write Post</h2></button>
+        <button on:click={() => {write_post_modal.get_dialog().show()}}><h2>Write Post</h2></button>
     {/if}
 </div>
 
