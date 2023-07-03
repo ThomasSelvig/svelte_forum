@@ -13,11 +13,12 @@
         margin: 2rem 0 0 0;
     }
     .meta {
-        flex-basis: 40%;
+        flex-basis: 58%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         & * {
-            flex-basis: 33%;
+            flex-basis: 20%;
             text-align: center;
         }
     }
@@ -32,6 +33,8 @@
 	import { writable } from 'svelte/store';
     import MicroModal from "micromodal"
 	import Loading from '$lib/components/Loading.svelte';
+    import MdiEdit from "~icons/mdi/edit"
+    import MdiDelete from "~icons/mdi/delete"
     
     export let data: PageData;
     const { post } = data
@@ -88,6 +91,12 @@
             <span>By <a href={`/user/${post.expand?.author.id}`}>{post.expand?.author.username}</a></span>
             <span>In <a href=".">{post.expand?.forum.name}</a></span>
             <span>{calc_time_diff(post.updated)}</span>
+            {#if post.author == $user?.id}
+                <span>
+                    <button class="text"> <MdiEdit /> </button>
+                    <button class="text"> <MdiDelete /> </button>
+                </span>
+            {/if}
         </div>
     </div>
     {#if post.body}<p>{post.body}</p>{/if}

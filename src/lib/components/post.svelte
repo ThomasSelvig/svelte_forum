@@ -3,6 +3,11 @@
         padding: .5rem 0;
         display: flex;
         justify-content: space-between;
+        overflow-wrap: break-word;
+
+        & > *:nth-child(1) {
+            max-width: 40%;
+        }
 
         & > span {
             // flex-basis: 100%;  // set to give all equal columns
