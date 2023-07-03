@@ -94,12 +94,15 @@ export type PostsPublicRecord<Tscore = unknown> = {
 }
 
 export type UsersRecord = {
-	name?: string
 	avatar?: string
+	bio?: string
+	follows?: RecordIdString[]
 }
 
 export type UsersPublicRecord = {
 	username?: string
+	bio?: string
+	follows?: RecordIdString[]
 }
 
 // Response types include system fields and match responses from the PocketBase API
