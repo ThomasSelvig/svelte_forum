@@ -64,7 +64,7 @@
         </span>
     </span>
     <span>
-        {post.expand?.author.username}
+        <a href={`/user/${post.expand?.author.id}`}>{post.expand?.author.username}</a>
         {#if post.expand && "forum" in post.expand}
             in <a data-sveltekit-preload-data="hover" href={`/forums/${post.expand?.forum.id}`}>{post.expand?.forum.name}</a>
         {/if}
