@@ -6,6 +6,7 @@ export enum Collections {
 	CommentVotes = "comment_votes",
 	Comments = "comments",
 	CommentsPublic = "comments_public",
+	Followers = "followers",
 	ForumCategories = "forum_categories",
 	Forums = "forums",
 	PostScores = "post_scores",
@@ -58,6 +59,12 @@ export type CommentsPublicRecord = {
 	author?: RecordIdString
 }
 
+export type FollowersRecord = {
+	user?: RecordIdString
+	follower?: RecordIdString
+	f_username?: string
+}
+
 export type ForumCategoriesRecord = {
 	name?: string
 }
@@ -69,6 +76,7 @@ export type ForumsRecord = {
 
 export type PostScoresRecord<Tscore = unknown> = {
 	score?: null | Tscore
+	author: RecordIdString
 }
 
 export type PostVotesRecord = {
@@ -99,16 +107,18 @@ export type UsersRecord = {
 	follows?: RecordIdString[]
 }
 
-export type UsersPublicRecord = {
+export type UsersPublicRecord<Tscore = unknown> = {
 	username?: string
 	bio?: string
 	follows?: RecordIdString[]
+	score?: null | Tscore
 }
 
 // Response types include system fields and match responses from the PocketBase API
 export type CommentVotesResponse<Texpand = unknown> = Required<CommentVotesRecord> & BaseSystemFields<Texpand>
 export type CommentsResponse<Texpand = unknown> = Required<CommentsRecord> & BaseSystemFields<Texpand>
 export type CommentsPublicResponse<Texpand = unknown> = Required<CommentsPublicRecord> & BaseSystemFields<Texpand>
+export type FollowersResponse<Texpand = unknown> = Required<FollowersRecord> & BaseSystemFields<Texpand>
 export type ForumCategoriesResponse<Texpand = unknown> = Required<ForumCategoriesRecord> & BaseSystemFields<Texpand>
 export type ForumsResponse<Texpand = unknown> = Required<ForumsRecord> & BaseSystemFields<Texpand>
 export type PostScoresResponse<Tscore = unknown, Texpand = unknown> = Required<PostScoresRecord<Tscore>> & BaseSystemFields<Texpand>
@@ -116,7 +126,7 @@ export type PostVotesResponse<Texpand = unknown> = Required<PostVotesRecord> & B
 export type PostsResponse<Texpand = unknown> = Required<PostsRecord> & BaseSystemFields<Texpand>
 export type PostsPublicResponse<Tscore = unknown, Texpand = unknown> = Required<PostsPublicRecord<Tscore>> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
-export type UsersPublicResponse<Texpand = unknown> = Required<UsersPublicRecord> & BaseSystemFields<Texpand>
+export type UsersPublicResponse<Tscore = unknown, Texpand = unknown> = Required<UsersPublicRecord<Tscore>> & BaseSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
 
@@ -124,6 +134,7 @@ export type CollectionRecords = {
 	comment_votes: CommentVotesRecord
 	comments: CommentsRecord
 	comments_public: CommentsPublicRecord
+	followers: FollowersRecord
 	forum_categories: ForumCategoriesRecord
 	forums: ForumsRecord
 	post_scores: PostScoresRecord
@@ -138,6 +149,7 @@ export type CollectionResponses = {
 	comment_votes: CommentVotesResponse
 	comments: CommentsResponse
 	comments_public: CommentsPublicResponse
+	followers: FollowersResponse
 	forum_categories: ForumCategoriesResponse
 	forums: ForumsResponse
 	post_scores: PostScoresResponse

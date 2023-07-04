@@ -38,6 +38,12 @@
     - can also deploy as many prerendered pages as possible as static site with https://github.com/sveltejs/kit/tree/master/packages/adapter-static
     - loading data in `load()` is important, for one because it caches: https://kit.svelte.dev/docs/load#rerunning-load-functions
     - data exported from `load()` cannot be promises. i.e. you cannot export a promise and then {#await} it. `load()` will always resolve your promises and is designed to load data before .svelte. you cannot, in other words, preload a {#await} expecting it to cancel if you click the page before preload finished.
+- pocketbase
+    - coll.getList(1,1).totalItems is useful to get an optimized COUNT while returning only 1 entry
+    - referencing "some_joined_table.id" in a View will turn the field into a "Single relation"
+    - pocketbase will autocancel just based on METHOD+PATH (i.e. GET posts), so use $autoCancel: false in components
+    - restrict return data: only allow "users" to CRUD themselves, but make a View called "users_public" to expose only certain fields to the public.
+    - restrict set data: use `(@request.data.some_allowed:isset = true && @request.data.some_disallowed:isset = false)`
 
 ## useful
 
