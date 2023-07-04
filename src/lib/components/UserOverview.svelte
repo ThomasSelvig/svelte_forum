@@ -33,9 +33,27 @@
     import MdiMessageDraw from '~icons/mdi/message-draw'
     import MdiComment from '~icons/mdi/comment'
     import MdiArrowRight from '~icons/mdi/arrow-right'
-	import type { UsersPublicResponse } from "$lib/pocketbase-types";
+	import type { CommentsPublicResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
+	import { writable } from "svelte/store";
+	import { pb } from "$lib/pocketbase";
 
     export let user: UsersPublicResponse
+
+    // use getlist with items=1 just to get the totalItems count
+    let comments = writable(
+        pb.collection("comments_public").getList<CommentsPublicResponse>(1, 1, {
+            filter: `author = "${user.id}"`,
+            fields: "id"
+        })
+    )
+    let posts = writable(
+        pb.collection("posts_public").getList<PostsPublicResponse>(1, 1, {
+            filter: `author = "${user.id}"`,
+            fields: "id",
+            // this component should not autocancel other "GET posts_public" on same page
+            $autoCancel: false
+        })
+    )
 </script>
 
 
@@ -51,18 +69,18 @@
             <span class="icon"><MdiThumbsUpDown /></span>
         </span> -->
         <a href={`/user/${user.id}/posts`}>
-            7
+            {#await $posts then posts}{posts.totalItems}{/await}
             <span class="icon"><MdiMessageDraw /></span>
         </a>
         <a href={`/user/${user.id}/comments`}>
-            7
+            {#await $comments then comments}{comments.totalItems}{/await}
             <span class="icon"><MdiComment /></span>
         </a>
     </div>
     
     <p class="account_age">Joined {new Date(user.created).toLocaleDateString("us")}</p>
     <p class="score">
-        15
+        {user.score}
         Social Credit
     </p>
 
