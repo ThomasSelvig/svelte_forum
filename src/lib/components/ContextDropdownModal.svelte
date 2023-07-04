@@ -40,8 +40,8 @@
         dialog.style.top = `${parent_bottom_left[1]}px`
     }
 
-    export function toggle() {
-        dialog?.showModal()
+    export function get_dialog() {
+        return dialog
     }
 
     onMount(() => {
