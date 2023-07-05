@@ -105,11 +105,13 @@ export type UsersRecord = {
 	avatar?: string
 	bio?: string
 	follows?: RecordIdString[]
+	notifications?: RecordIdString[]
 }
 
 export type UsersPublicRecord<Tscore = unknown> = {
 	username?: string
 	bio?: string
+	avatar?: string
 	follows?: RecordIdString[]
 	score?: null | Tscore
 }
