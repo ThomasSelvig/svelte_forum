@@ -68,6 +68,7 @@
     import MdiLogout from '~icons/mdi/logout'
 	import ContextDropdownModal from "$lib/components/ContextDropdownModal.svelte";
 
+
     let notifs: ContextDropdownModal
     let notifs_button: HTMLElement
 
@@ -84,7 +85,7 @@
     </ContextDropdownModal>
     <ContextDropdownModal bind:this={account} relative_to={account_button}>
         <li>
-            <a href={`/user/${$user?.id}`} on:click={() => {
+            <a data-sveltekit-reload href={`/user/${$user?.id}`} on:click={() => {
                 account.get_dialog().close()
             }}>
                 <span class="icon"><MdiPerson /></span>
