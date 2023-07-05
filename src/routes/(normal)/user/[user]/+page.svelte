@@ -45,7 +45,6 @@
             }
 
             .bio {
-                margin: 0;
                 max-width: 25rem;
             }
         }
@@ -94,7 +93,7 @@
 
 <section class="about">
     <div class="about_overview">
-        <UserOverview user={u}/>
+        <UserOverview view_user={u}/>
     </div>
 
     <div class="about_detailed">
