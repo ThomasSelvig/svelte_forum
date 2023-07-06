@@ -67,18 +67,24 @@
 	import Loading from "$lib/components/Loading.svelte";
 	import Post from "$lib/components/Post.svelte";
 
+    /**
+     * anything relying on an url [slug] must be a reactive statement (not a store)
+     * this is intended behaviour for some reason, even though multiple bug reports
+     * have been filed againt the "feature".
+     * not even invalidate() or invalidateAll() can deal with it.
+     */
     export let data: PageData
 
-    let user_data = writable(
+    $: user_data = writable(
         pb.collection("users_public").getOne<UsersPublicResponse>(data.req_user_id)
     )
-    let followers = writable(
+    $: followers = writable(
         pb.collection("followers").getList<FollowersResponse>(1, 1, {
             filter: `user = "${data.req_user_id}"`,
             fields: "follower,f_username"
         })
     )
-    let posts = writable(
+    $: posts = writable(
         pb.collection("posts_public").getList<
             PostsPublicResponse<unknown, {author: UsersPublicResponse, forum: ForumsResponse}>
         >(1, 20, {

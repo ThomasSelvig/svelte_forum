@@ -85,7 +85,7 @@
     </ContextDropdownModal>
     <ContextDropdownModal bind:this={account} relative_to={account_button}>
         <li>
-            <a data-sveltekit-reload href={`/user/${$user?.id}`} on:click={() => {
+            <a data-sveltekit-preload-data="hover" href={`/user/${$user?.id}`} on:click={() => {
                 account.get_dialog().close()
             }}>
                 <span class="icon"><MdiPerson /></span>
