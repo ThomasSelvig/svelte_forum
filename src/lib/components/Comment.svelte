@@ -1,17 +1,25 @@
 <style lang="scss">
     .comment {
         display: flex;
-        // background-color: $main_background;
+
         margin: 1rem 0;
 
-        .username {
-            margin-bottom: .33rem;
+        .avatar {
+            flex-basis: 10%;
         }
         
         &_body {
             margin: 0 0 0 1rem;
+            flex-basis: 100%;
+
             & p {
                 margin: 0;
+            }
+
+            .username {
+                margin-bottom: .33rem;
+                display: flex;
+                justify-content: space-between;
             }
         }
     }
@@ -32,7 +40,7 @@
 </script>
 
 <div class="comment">
-    <Avatar {view_user} size="5rem" />
+    <div class="avatar"><Avatar {view_user} size="5rem" /></div>
     <div class="comment_body">
 
         <div class="username">
@@ -53,21 +61,23 @@
 
                 {/if}
             </h3>
+
+            {#if $user?.id == view_comment.author}
+            <h3>
+                <button class="text icon" on:click={() => {
+                    edit_comm.start_edit_comment(view_comment)
+                }}>
+                    <MdiEdit />
+                </button>
+
+                <button class="text icon" on:click={() => {
+                    edit_comm.delete_comment(view_comment)
+                }}><MdiDelete /></button>
+            </h3>
+            {/if}
+
         </div>
         <p>{view_comment.comment}</p>
 
-                {#if $user?.id == view_comment.author}
-                    <span>
-                        <button class="text icon" on:click={() => {
-                            edit_comm.start_edit_comment(view_comment)
-                        }}>
-                            <MdiEdit />
-                        </button>
-    
-                        <button class="text icon" on:click={() => {
-                            edit_comm.delete_comment(view_comment)
-                        }}><MdiDelete /></button>
-                    </span>
-                {/if}
     </div>
 </div>

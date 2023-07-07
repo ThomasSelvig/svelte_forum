@@ -33,6 +33,7 @@
     import MdiEdit from "~icons/mdi/edit"
     import MdiDelete from "~icons/mdi/delete"
 	import Comment from '$lib/components/Comment.svelte';
+	import Avatar from '$lib/components/Avatar.svelte';
     
     export let data: PageData;
     const { post } = data
@@ -98,7 +99,13 @@
     <div class="title_bar">
         <h3>{post.title}</h3>
         <div class="meta">
-            <span>By <a href={`/user/${post.expand?.author.id}`}>{post.expand?.author.username}</a></span>
+            <span>
+                <!-- By -->
+                <!-- {#if post.expand}<Avatar view_user={post.expand.author} size="3rem" />{/if} -->
+                <a href={`/user/${post.expand?.author.id}`}>
+                    {post.expand?.author.username}
+                </a>
+            </span>
             <span>In <a href=".">{post.expand?.forum.name}</a></span>
             <span>{calc_time_diff(post.updated)}</span>
             {#if post.author == $user?.id}
