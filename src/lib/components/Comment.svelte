@@ -32,7 +32,13 @@
         <div class="username">
             <h3>
                 <a href={`/user/${view_user.id}`}>{view_user.username}</a>
-                {#if view_comment.expand?.post.expand.forum}
+                {#if view_comment.expand?.post}
+                on
+                <a href={`/forums/${view_comment.expand.post.forum}/${view_comment.expand.post.id}`}>
+                    {view_comment.expand.post.title}
+                </a>
+                {/if}
+                {#if view_comment.expand?.post.expand?.forum}
                 in
                 <a href={`/forums/${view_comment.expand.post.expand.forum.id}`}>
                     {view_comment.expand.post.expand.forum.name}
