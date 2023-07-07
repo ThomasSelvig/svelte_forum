@@ -13,6 +13,7 @@ export interface ExpandRecord<T = Record> extends Omit<Record, "expand"> {
 }
 
 export const pb = new PocketBase(PUBLIC_PB_HOST)
+// pb.autoCancellation(false)
 export const user = writable(pb.authStore.model, function (set) {  
     pb.authStore.onChange((token, model) => {  
         set(model)

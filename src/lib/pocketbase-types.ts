@@ -67,7 +67,7 @@ export type FollowingRecord = {
 }
 
 export type FollowingPublicRecord = {
-	user: RecordIdString
+	user?: RecordIdString
 	following?: RecordIdString
 }
 
