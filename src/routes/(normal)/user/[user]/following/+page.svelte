@@ -23,7 +23,7 @@
     load_following(1)
 </script>
 
-<h2>Followers {#await $following}<Loading />{/await}</h2>
+<h2>Following {#await $following}<Loading />{/await}</h2>
 {#await $following then followers}
     {#each followers.items as follower}
         {#if follower.expand}

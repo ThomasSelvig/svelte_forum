@@ -59,7 +59,7 @@
     import { pb, user } from "$lib/pocketbase";
 	import { writable } from "svelte/store";
 	import type { LayoutData } from "./$types";
-	import type { FollowingPublicResponse, FollowingResponse, UsersPublicResponse } from "$lib/pocketbase-types";
+	import type { FollowingPublicResponse, FollowingResponse, RecordIdString, UsersPublicResponse } from "$lib/pocketbase-types";
 	import UserOverview from "$lib/components/UserOverview.svelte";
     import MdiDotsHorizontal from "~icons/mdi/dots-horizontal"
     import MdiBellRing from "~icons/mdi/bell-ring"
@@ -90,14 +90,14 @@
     // is $user following req_user_id
     let follow_obj = writable<FollowingResponse | null>(null)
 
-    async function sync_follow_status() {
+    async function sync_follow_status(u: RecordIdString) {
         $follow_obj = await pb.collection("following").getFirstListItem<FollowingResponse>(
-            `user="${$user?.id}" && following="${req_user_id}"`
+            `user="${$user?.id}" && following="${u}"`
         )
             .then(r => r)
             .catch(err => null)
     }
-    sync_follow_status()
+    $: sync_follow_status(req_user_id)
 
     async function follow_user(set_follor_status: boolean) {
         if (set_follor_status) {
