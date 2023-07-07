@@ -34,13 +34,13 @@
 	import Loading from '$lib/components/Loading.svelte';
     import MdiEdit from "~icons/mdi/edit"
     import MdiDelete from "~icons/mdi/delete"
+	import EditCommentModal from '$lib/components/EditCommentModal.svelte';
     
     export let data: PageData;
     const { post } = data
 
+    let edit_comm: EditCommentModal
     let write_comment_modal: Modal
-    let edit_comment_modal: Modal
-    let editing_comment = writable<CommentsResponse>()
 
     let comments = writable(get_comments(post.id))
     async function get_comments(post: RecordIdString) {
@@ -65,29 +65,9 @@
             })
     }
 
-    // uses the set `$comment`
-    async function edit_comment(e: SubmitEvent) {
-        const data = get_data_entries(e)
-        pb.collection("comments").update(data.id.toString(), {
-            comment: data.comment.toString()
-        })
-            .then(r => {
-                edit_comment_modal.get_dialog().close()
-                $comments = get_comments(post.id)
-            })
-            .catch(err => {
-                error = err.toString()
-            })
+    async function refresh_comments() {
+        $comments = get_comments(post.id)
     }
-
-    // uses the set `$comment`
-    async function delete_comment() {
-        pb.collection("comments").delete($editing_comment.id)
-            .then(r => {
-                $comments = get_comments(post.id)
-            })
-    }
-
     
 </script>
 
@@ -105,17 +85,7 @@
     </form>
 </Modal>
 
-<Modal title="Edit Comment" bind:this={edit_comment_modal}>
-    <form method="post" on:submit|preventDefault={edit_comment}>
-        <label>
-            Comment *
-            <textarea name="comment" rows="5">{$editing_comment?.comment}</textarea>
-        </label>
-        <input type="hidden" name="id" value={$editing_comment?.id}>
-        <button>Submit</button>
-        {#if error}<p class="error">{error}</p>{/if}
-    </form>
-</Modal>
+<EditCommentModal bind:this={edit_comm} />
 
 <div class="title_bar">
     <h1>Post</h1>
@@ -153,15 +123,14 @@
                 {#if $user?.id == comment.author}
                     <span>
                         <button class="text icon" on:click={() => {
-                            $editing_comment = comment
-                            edit_comment_modal.get_dialog().showModal()
+                            edit_comm.start_edit_comment(comment, refresh_comments)
                         }}>
                             <MdiEdit />
                         </button>
     
                         <button class="text icon" on:click={() => {
-                            $editing_comment = comment
-                            delete_comment()
+                            pb.collection("comments").delete(comment.id)
+                                .then(_ => refresh_comments)
                         }}><MdiDelete /></button>
                     </span>
                 {/if}
