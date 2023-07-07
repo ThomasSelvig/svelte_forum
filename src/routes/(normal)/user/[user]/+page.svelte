@@ -67,12 +67,7 @@
 	import Loading from "$lib/components/Loading.svelte";
 	import Post from "$lib/components/Post.svelte";
 
-    /**
-     * anything relying on an url [slug] must be a reactive statement (not a store)
-     * this is intended behaviour for some reason, even though multiple bug reports
-     * have been filed againt the "feature".
-     * not even invalidate() or invalidateAll() can deal with it.
-     */
+    // anything relying on an url [slug] must be a reactive statement (not a store)
     export let data: PageData
 
     $: user_data = writable(
