@@ -59,13 +59,14 @@
     import { pb, user } from "$lib/pocketbase";
 	import { writable } from "svelte/store";
 	import type { PageData } from "./$types";
-	import type { FollowingPublicResponse, ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
+	import type { FollowingPublicResponse, FollowingRecord, FollowingResponse, ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
 	import UserOverview from "$lib/components/UserOverview.svelte";
     import MdiDotsHorizontal from "~icons/mdi/dots-horizontal"
     import MdiBellRing from "~icons/mdi/bell-ring"
     import MdiBellOff from "~icons/mdi/bell-off"
 	import Loading from "$lib/components/Loading.svelte";
 	import Post from "$lib/components/Post.svelte";
+	import type { ClientResponseError } from "pocketbase";
 
     // anything relying on an url [slug] must be a reactive statement (not a store)
     export let data: PageData
@@ -87,14 +88,44 @@
         })
     )
     $: posts = writable(
-        pb.collection("posts_public").getList<
-            PostsPublicResponse<unknown, {author: UsersPublicResponse, forum: ForumsResponse}>
-        >(1, 20, {
+        pb.collection("posts_public").getList<PostsPublicResponse<
+            unknown,
+            {author: UsersPublicResponse, forum: ForumsResponse}
+        >>(1, 20, {
             filter: `author = "${data.req_user_id}"`,
             expand: "author,forum",
             sort: "-updated"
         })
     )
+    
+    // is user following data.req_user_id
+    let follow_obj = writable<FollowingResponse | null>(null)
+
+    async function sync_follow_status() {
+        $follow_obj = await pb.collection("following").getFirstListItem<FollowingResponse>(
+            `user="${$user?.id}" && following="${data.req_user_id}"`
+        )
+            .then(r => r)
+            .catch(err => null)
+    }
+    sync_follow_status()
+    
+
+    async function follow_user(set_follor_status: boolean) {
+        if (set_follor_status) {
+            // add following entry
+            $follow_obj = await pb.collection("following").create<FollowingResponse>({
+                user: $user?.id,
+                following: data.req_user_id
+            })
+        }
+        else {
+            // clear following entry
+            if (await pb.collection("following").delete((await $follow_obj)!.id)) {
+                $follow_obj = null
+            }
+        }
+    }
 </script>
 
 {#await $user_data then u}
@@ -113,7 +144,15 @@
                 <div class="controls">
                     <button class="icon text"><h2><MdiBellRing /></h2></button>
                     <button class="icon text"><h2><MdiDotsHorizontal /></h2></button>
-                    <button><h2>Follow</h2></button>
+                    {#if $follow_obj}
+                        <button on:click={() => {follow_user(false)}}>
+                            <h2>Unfollow</h2>
+                        </button>
+                    {:else}
+                        <button on:click={() => {follow_user(true)}} disabled={u.id == $user?.id}>
+                            <h2>Follow</h2>
+                        </button>
+                    {/if}
                 </div>
             </div>
             <div class="stats">

@@ -48,6 +48,15 @@ button {
         vertical-align: middle;
     }
 
+    &:disabled {
+        border-color: $darker_text;
+        color: $darker_text;
+        opacity: 50%;
+        &:hover {
+            border-color: $darker_text;
+        }
+    }
+
     &:hover {
         border-color: $link_hover;
     }
@@ -111,3 +120,4 @@ form {
         padding: 0 2rem;
     }
 }
+

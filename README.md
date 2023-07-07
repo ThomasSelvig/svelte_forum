@@ -1,5 +1,9 @@
 ## TODO
 
+### important
+- pocketbase subscribe: onMount's function can return an "onUnMount" function
+    - use to unsub to pocketbase on page unload
+
 ### general todo
 - use built in svelte animations
 - use pocketbase subscribe to collection to update posts
