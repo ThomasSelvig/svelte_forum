@@ -1,13 +1,10 @@
 <style lang="scss">
-    .post, .comment {
+    .post {
         padding: 1rem;
         background: $main_background;
     }
     .post > .title_bar {
         margin-bottom: 1rem;
-    }
-    .comment {
-        margin: 1rem 0;
     }
     .comments {
         margin: 2rem 0 0 0;
@@ -26,15 +23,16 @@
 
 <script lang="ts">
 	import { pb, user } from '$lib/pocketbase';
-	import type { CommentsPublicResponse, CommentsResponse, RecordIdString, UsersPublicResponse } from '$lib/pocketbase-types';
+	import type { CommentsPublicResponse, RecordIdString, UsersPublicResponse } from '$lib/pocketbase-types';
     import type { PageData } from './$types';
 	import Modal from '$lib/components/Modal.svelte';
 	import { calc_time_diff, get_data_entries } from '$lib/helpers';
 	import { writable } from 'svelte/store';
 	import Loading from '$lib/components/Loading.svelte';
+	import EditCommentModal from '$lib/components/EditCommentModal.svelte';
     import MdiEdit from "~icons/mdi/edit"
     import MdiDelete from "~icons/mdi/delete"
-	import EditCommentModal from '$lib/components/EditCommentModal.svelte';
+	import Comment from '$lib/components/Comment.svelte';
     
     export let data: PageData;
     const { post } = data
@@ -85,7 +83,7 @@
     </form>
 </Modal>
 
-<EditCommentModal bind:this={edit_comm} />
+<EditCommentModal bind:this={edit_comm} done_editing_cb={refresh_comments} />
 
 <div class="title_bar">
     <h1>Post</h1>
@@ -118,23 +116,9 @@
     <h2>Comments {#await $comments}<Loading />{/await}</h2>
     {#await $comments then comments}
         {#each comments.items as comment}
-            <div class="comment">
-                <span>{comment.comment}</span>
-                {#if $user?.id == comment.author}
-                    <span>
-                        <button class="text icon" on:click={() => {
-                            edit_comm.start_edit_comment(comment, refresh_comments)
-                        }}>
-                            <MdiEdit />
-                        </button>
-    
-                        <button class="text icon" on:click={() => {
-                            pb.collection("comments").delete(comment.id)
-                                .then(_ => refresh_comments)
-                        }}><MdiDelete /></button>
-                    </span>
-                {/if}
-            </div>
+            {#if comment.expand}
+            <Comment view_user={comment.expand.author} view_comment={comment} {edit_comm} /> 
+            {/if}
         {/each}
     {/await}
 </section>

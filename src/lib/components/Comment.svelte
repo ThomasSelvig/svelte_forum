@@ -18,11 +18,17 @@
 </style>
 
 <script lang="ts">
+	import { user } from "$lib/pocketbase";
 	import type { CommentsPublicResponse, ForumsResponse, UsersPublicResponse } from "$lib/pocketbase-types";
     import Avatar from "./Avatar.svelte";
+	import type EditCommentModal from "./EditCommentModal.svelte";
+    import MdiEdit from "~icons/mdi/edit"
+    import MdiDelete from "~icons/mdi/delete"
 
     export let view_user: UsersPublicResponse
     export let view_comment: CommentsPublicResponse<any>
+    export let edit_comm: EditCommentModal
+
 </script>
 
 <div class="comment">
@@ -32,22 +38,36 @@
         <div class="username">
             <h3>
                 <a href={`/user/${view_user.id}`}>{view_user.username}</a>
-                {#if view_comment.expand?.post}
+                {#if "post" in view_comment.expand}
                 on
                 <a href={`/forums/${view_comment.expand.post.forum}/${view_comment.expand.post.id}`}>
                     {view_comment.expand.post.title}
                 </a>
-                {/if}
-                {#if view_comment.expand?.post.expand?.forum}
-                in
-                <a href={`/forums/${view_comment.expand.post.expand.forum.id}`}>
-                    {view_comment.expand.post.expand.forum.name}
-                </a>
+
+                    {#if view_comment.expand?.post.expand?.forum}
+                    in
+                    <a href={`/forums/${view_comment.expand.post.expand.forum.id}`}>
+                        {view_comment.expand.post.expand.forum.name}
+                    </a>
+                    {/if}
+
                 {/if}
             </h3>
-            <!-- TODO put user actions here -->
         </div>
         <p>{view_comment.comment}</p>
 
+                {#if $user?.id == view_comment.author}
+                    <span>
+                        <button class="text icon" on:click={() => {
+                            edit_comm.start_edit_comment(view_comment)
+                        }}>
+                            <MdiEdit />
+                        </button>
+    
+                        <button class="text icon" on:click={() => {
+                            edit_comm.delete_comment(view_comment)
+                        }}><MdiDelete /></button>
+                    </span>
+                {/if}
     </div>
 </div>

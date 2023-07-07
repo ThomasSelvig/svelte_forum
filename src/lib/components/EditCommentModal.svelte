@@ -7,7 +7,7 @@
 
     let edit_comment_modal: Modal
     let editing_comment = writable<CommentsResponse>()
-    let done_editing_cb: CallableFunction
+    export let done_editing_cb: CallableFunction
 
     // uses the set `$comment`
     let error: string
@@ -26,10 +26,14 @@
             })
     }
 
-    export function start_edit_comment(comment: CommentsResponse, cb: CallableFunction) {
-        done_editing_cb = cb
+    export function start_edit_comment(comment: CommentsResponse) {
         $editing_comment = comment
         edit_comment_modal.get_dialog().show()
+    }
+
+    export function delete_comment(comment: CommentsResponse) {
+        pb.collection("comments").delete(comment.id)
+            .then(r => {done_editing_cb()})
     }
 
 
