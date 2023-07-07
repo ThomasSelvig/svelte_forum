@@ -4,17 +4,6 @@
         width: 12rem;
     }
 
-    .avatar {
-        width: 10rem;
-        height: 10rem;
-        display: block;
-        margin: 1rem;
-
-        & > img {
-            border-radius: 10px;
-        }
-    }
-
     .stats {
         margin: 0rem 2rem 0rem;
         // padding-top: 1rem;
@@ -33,24 +22,21 @@
 </style>
 
 <script lang="ts">
-    import MdiAccountCircle from "~icons/mdi/account-circle"
-    import MdiThumbsUpDown from '~icons/mdi/thumbs-up-down'
     import MdiMessageDraw from '~icons/mdi/message-draw'
     import MdiComment from '~icons/mdi/comment'
-    import MdiArrowRight from '~icons/mdi/arrow-right'
 	import type { CommentsPublicResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
 	import { writable } from "svelte/store";
-	import { pb, user } from "$lib/pocketbase";
-	import type { Record } from "pocketbase";
+	import { pb } from "$lib/pocketbase";
+	import Avatar from "./Avatar.svelte";
 
     export let view_user: UsersPublicResponse
-    let avatar_url = pb.files.getUrl(view_user as unknown as Record, view_user.avatar)
 
     // use getlist with items=1 just to get the totalItems count
     let comments = writable(
         pb.collection("comments_public").getList<CommentsPublicResponse>(1, 1, {
             filter: `author = "${view_user.id}"`,
-            fields: "id"
+            fields: "id",
+            $autoCancel: false
         })
     )
     let posts = writable(
@@ -66,13 +52,7 @@
 
 <div class="card">
 
-    <div class="avatar icon">
-        {#if view_user.avatar}
-            <img src={avatar_url} style="width: 100%;" alt="">
-        {:else}
-            <MdiAccountCircle width="10rem" height="10rem" /> 
-        {/if}
-    </div>
+    <Avatar {view_user} />
 
     <div class="stats">
         <!-- <span>
