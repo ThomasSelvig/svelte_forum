@@ -6,7 +6,8 @@ export enum Collections {
 	CommentVotes = "comment_votes",
 	Comments = "comments",
 	CommentsPublic = "comments_public",
-	Followers = "followers",
+	Following = "following",
+	FollowingPublic = "following_public",
 	ForumCategories = "forum_categories",
 	Forums = "forums",
 	PostScores = "post_scores",
@@ -59,10 +60,15 @@ export type CommentsPublicRecord = {
 	author?: RecordIdString
 }
 
-export type FollowersRecord = {
-	user?: RecordIdString
-	follower?: RecordIdString
-	f_username?: string
+export type FollowingRecord = {
+	user: RecordIdString
+	following: RecordIdString
+	notifications?: boolean
+}
+
+export type FollowingPublicRecord = {
+	user: RecordIdString
+	following?: RecordIdString
 }
 
 export type ForumCategoriesRecord = {
@@ -104,15 +110,12 @@ export type PostsPublicRecord<Tscore = unknown> = {
 export type UsersRecord = {
 	avatar?: string
 	bio?: string
-	follows?: RecordIdString[]
-	notifications?: RecordIdString[]
 }
 
 export type UsersPublicRecord<Tscore = unknown> = {
 	username?: string
 	bio?: string
 	avatar?: string
-	follows?: RecordIdString[]
 	score?: null | Tscore
 }
 
@@ -120,7 +123,8 @@ export type UsersPublicRecord<Tscore = unknown> = {
 export type CommentVotesResponse<Texpand = unknown> = Required<CommentVotesRecord> & BaseSystemFields<Texpand>
 export type CommentsResponse<Texpand = unknown> = Required<CommentsRecord> & BaseSystemFields<Texpand>
 export type CommentsPublicResponse<Texpand = unknown> = Required<CommentsPublicRecord> & BaseSystemFields<Texpand>
-export type FollowersResponse<Texpand = unknown> = Required<FollowersRecord> & BaseSystemFields<Texpand>
+export type FollowingResponse<Texpand = unknown> = Required<FollowingRecord> & BaseSystemFields<Texpand>
+export type FollowingPublicResponse<Texpand = unknown> = Required<FollowingPublicRecord> & BaseSystemFields<Texpand>
 export type ForumCategoriesResponse<Texpand = unknown> = Required<ForumCategoriesRecord> & BaseSystemFields<Texpand>
 export type ForumsResponse<Texpand = unknown> = Required<ForumsRecord> & BaseSystemFields<Texpand>
 export type PostScoresResponse<Tscore = unknown, Texpand = unknown> = Required<PostScoresRecord<Tscore>> & BaseSystemFields<Texpand>
@@ -136,7 +140,8 @@ export type CollectionRecords = {
 	comment_votes: CommentVotesRecord
 	comments: CommentsRecord
 	comments_public: CommentsPublicRecord
-	followers: FollowersRecord
+	following: FollowingRecord
+	following_public: FollowingPublicRecord
 	forum_categories: ForumCategoriesRecord
 	forums: ForumsRecord
 	post_scores: PostScoresRecord
@@ -151,7 +156,8 @@ export type CollectionResponses = {
 	comment_votes: CommentVotesResponse
 	comments: CommentsResponse
 	comments_public: CommentsPublicResponse
-	followers: FollowersResponse
+	following: FollowingResponse
+	following_public: FollowingPublicResponse
 	forum_categories: ForumCategoriesResponse
 	forums: ForumsResponse
 	post_scores: PostScoresResponse

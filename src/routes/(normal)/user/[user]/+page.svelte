@@ -59,7 +59,7 @@
     import { pb, user } from "$lib/pocketbase";
 	import { writable } from "svelte/store";
 	import type { PageData } from "./$types";
-	import type { FollowersResponse, ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
+	import type { FollowingPublicResponse, ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
 	import UserOverview from "$lib/components/UserOverview.svelte";
     import MdiDotsHorizontal from "~icons/mdi/dots-horizontal"
     import MdiBellRing from "~icons/mdi/bell-ring"
@@ -78,10 +78,17 @@
     $: user_data = writable(
         pb.collection("users_public").getOne<UsersPublicResponse>(data.req_user_id)
     )
-    $: followers = writable(
-        pb.collection("followers").getList<FollowersResponse>(1, 1, {
+    $: following = writable(
+        pb.collection("following_public").getList<FollowingPublicResponse>(1, 1, {
             filter: `user = "${data.req_user_id}"`,
-            fields: "follower,f_username"
+            fields: "id",
+            $autoCancel: false
+        })
+    )
+    $: followers = writable(
+        pb.collection("following_public").getList<FollowingPublicResponse>(1, 1, {
+            filter: `following = "${data.req_user_id}"`,
+            fields: "id"
         })
     )
     $: posts = writable(
@@ -121,7 +128,10 @@
                         Followers
                     </a>
                     <pre>    </pre>
-                    <a href={`/user/${u.id}/following`}>{u.follows.length} Following</a>
+                    <a href={`/user/${u.id}/following`}>
+                        {#await $following then following} {following.totalItems} {/await}
+                        Following
+                    </a>
                 </span>
             </div>
 
