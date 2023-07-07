@@ -98,7 +98,7 @@
         })
     )
     
-    // is user following data.req_user_id
+    // is $user following data.req_user_id
     let follow_obj = writable<FollowingResponse | null>(null)
 
     async function sync_follow_status() {
@@ -109,14 +109,14 @@
             .catch(err => null)
     }
     sync_follow_status()
-    
 
     async function follow_user(set_follor_status: boolean) {
         if (set_follor_status) {
             // add following entry
             $follow_obj = await pb.collection("following").create<FollowingResponse>({
                 user: $user?.id,
-                following: data.req_user_id
+                following: data.req_user_id,
+                notifications: true
             })
         }
         else {
@@ -125,6 +125,12 @@
                 $follow_obj = null
             }
         }
+    }
+
+    async function toggle_notifs() {
+        $follow_obj = await pb.collection("following").update($follow_obj!.id, {
+            notifications: !$follow_obj?.notifications
+        })
     }
 </script>
 
@@ -142,17 +148,31 @@
             <div class="title_bar">
                 <h1>{u.username}</h1>
                 <div class="controls">
-                    <button class="icon text"><h2><MdiBellRing /></h2></button>
-                    <button class="icon text"><h2><MdiDotsHorizontal /></h2></button>
+
                     {#if $follow_obj}
-                        <button on:click={() => {follow_user(false)}}>
-                            <h2>Unfollow</h2>
-                        </button>
-                    {:else}
-                        <button on:click={() => {follow_user(true)}} disabled={u.id == $user?.id}>
-                            <h2>Follow</h2>
-                        </button>
+                    <button class="icon text" on:click={toggle_notifs}>
+                        <h2>
+                            {#if $follow_obj.notifications}
+                            <MdiBellRing />
+                            {:else}
+                            <MdiBellOff />
+                            {/if}
+                        </h2>
+                    </button>
                     {/if}
+
+                    <button class="icon text"><h2><MdiDotsHorizontal /></h2></button>
+
+                    {#if $follow_obj}
+                    <button on:click={() => {follow_user(false)}}>
+                        <h2>Unfollow</h2>
+                    </button>
+                    {:else}
+                    <button on:click={() => {follow_user(true)}} disabled={u.id == $user?.id}>
+                        <h2>Follow</h2>
+                    </button>
+                    {/if}
+
                 </div>
             </div>
             <div class="stats">
