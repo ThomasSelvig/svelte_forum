@@ -6,6 +6,7 @@
 	import { pb } from '$lib/pocketbase';
 	import Comment from '$lib/components/Comment.svelte';
 	import EditCommentModal from '$lib/components/EditCommentModal.svelte';
+	import Loading from '$lib/components/Loading.svelte';
     
     export let data: PageData;
     let edit_comm: EditCommentModal
@@ -19,7 +20,7 @@
         }>
     >>>()
 
-    async function load_comments(page: number) {
+    function load_comments(page: number) {
         $comments = pb.collection("comments_public").getList(page, 20, {
             filter: `author="${data.req_user_id}"`,
             sort: "-created",
@@ -33,7 +34,7 @@
 
 <EditCommentModal bind:this={edit_comm} done_editing_cb={() => {load_comments(page)}} />
 
-<h2>Comments</h2>
+<h2>Comments {#await $comments}<Loading />{/await}</h2>
 {#await $comments then comments}
     {#each comments.items as comment}
         {#if comment.expand && comment.expand.post.expand}
