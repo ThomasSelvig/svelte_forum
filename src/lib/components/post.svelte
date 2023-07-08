@@ -62,7 +62,9 @@
 
         <!-- post content -->
         <div class="content">
-            <h2>{post.title}</h2>
+            <a href={`/forums/${post.forum}/${post.id}`}>
+                <h2>{post.title}</h2>
+            </a>
         </div>
     </div>
 </div>
@@ -93,40 +95,22 @@
         align-items: center;
     }
 
-    .content h2 {
-        margin: 0;
+    .content {
+        & h2 {
+            margin: 0;
+        }
+
+        & a {
+            color: $text;
+            &:hover {
+                color: $link_hover;
+            }
+        }
     }
 
     .container {
-        margin: 2rem 0;
+        margin: 1rem 0;
+        padding: 1rem;
+        box-shadow: 0px 0px 20px -5px transparentize($color: $alt_background, $amount: .25);
     }
-    // .post {
-    //     padding: .5rem 0;
-    //     display: flex;
-    //     justify-content: space-between;
-    //     overflow-wrap: break-word;
-
-    //     & > *:nth-child(1) {
-    //         max-width: 40%;
-    //     }
-
-    //     & > span {
-    //         // flex-basis: 100%;  // set to give all equal columns
-    //         flex-basis: 20%;
-    //         &:nth-child(1) {
-    //             flex-basis: 40%;
-    //         }
-
-    //         .rating {
-    //             display: inline-block;
-    //             padding: 0 .33rem;
-    //         }
-
-    //         .ratings {
-    //             background-color: $main_background;
-    //             padding: .5rem;
-    //             vertical-align: middle;
-    //         }
-    //     }
-    // }
 </style>
