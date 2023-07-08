@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { ListResult } from "pocketbase";
+	import { createEventDispatcher } from "svelte";
 
     export let list: ListResult<any>
+    export let page: number
+    // let dispatch = createEventDispatcher<{page_change: number}>()
 </script>
 
 <!-- 
@@ -27,11 +30,20 @@
  -->
 
 <div class="meta">
-    Showing {list.items.length} of {list.totalItems}
+    Showing
+    {(list.page - 1) * list.perPage}-{list.items.length + (list.page - 1) * list.perPage}
+    out of
+    {list.totalItems}
 </div>
 
 <div class="page_buttons">
-    {#each {length: list.totalItems / list.perPage} as _, page_i}
-        <button class="icon">{page_i}</button>
+    {#each {length: list.totalItems / list.perPage} as _, i}
+        {@const page_i = i+1}
+
+        <button class="icon" on:click={() => 
+            // dispatch("page_change", page_i)
+            {page = page_i}
+        }>{page_i}</button>
+
     {/each}
 </div>
