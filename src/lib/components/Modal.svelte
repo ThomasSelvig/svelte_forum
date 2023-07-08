@@ -45,7 +45,17 @@
     export let title: string
 
     let dialog: HTMLDialogElement
-    export function get_dialog() { return dialog }
+    
+    export function open() {
+        dialog.showModal()
+        // focus first control
+        let form = dialog.querySelector("form") as HTMLFormElement
+        (form.elements[0] as HTMLElement).focus()
+    }
+
+    export function close() {
+        dialog.close()
+    }
 
     function on_close() {
         // clear input fields

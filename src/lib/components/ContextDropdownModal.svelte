@@ -40,9 +40,9 @@
         dialog.style.top = `${parent_bottom_left[1]}px`
     }
 
-    export function get_dialog() {
-        return dialog
-    }
+    // export function get_dialog() { return dialog }
+    export function open() { dialog.showModal() }
+    export function close() { dialog.close() }
 
     onMount(() => {
         dialog?.addEventListener("click", event => {

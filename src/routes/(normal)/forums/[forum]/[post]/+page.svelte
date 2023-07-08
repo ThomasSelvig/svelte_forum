@@ -56,7 +56,7 @@
     async function submit_comment(e: SubmitEvent) {
         pb.collection("comments").create(get_data_entries(e))
             .then(r => {
-                write_comment_modal.get_dialog().close()
+                write_comment_modal.close()
                 $comments = get_comments(post.id)
             })
             .catch(err => {
@@ -90,7 +90,7 @@
     <h1>Post</h1>
     {#if $user}
         <button on:click={() => {
-            write_comment_modal.get_dialog().showModal()
+            write_comment_modal.open()
         }}><h2>Write Comment</h2></button>
     {/if}
 </div>

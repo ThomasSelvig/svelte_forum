@@ -17,7 +17,7 @@
             comment: data.comment.toString()
         })
             .then(r => {
-                edit_comment_modal.get_dialog().close()
+                edit_comment_modal.close()
                 done_editing_cb()
                 // $comments = get_comments(post.id)
             })
@@ -28,7 +28,7 @@
 
     export function start_edit_comment(comment: CommentsResponse) {
         $editing_comment = comment
-        edit_comment_modal.get_dialog().show()
+        edit_comment_modal.open()
     }
 
     export function delete_comment(comment: CommentsResponse) {

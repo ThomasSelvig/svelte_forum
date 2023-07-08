@@ -30,7 +30,7 @@
     async function submit_post(e: SubmitEvent) {
         pb.collection("posts").create(get_data_entries(e))
             .then(r => {
-                write_post_modal.get_dialog().close()
+                write_post_modal.close()
                 posts.set(get_posts(forum.id))
             })
             .catch(err => {
@@ -66,7 +66,7 @@
         {#await $posts}<Loading />{/await}
     </h1>
     {#if $user}
-        <button on:click={() => {write_post_modal.get_dialog().show()}}><h2>Write Post</h2></button>
+        <button on:click={() => {write_post_modal.open()}}><h2>Write Post</h2></button>
     {/if}
 </div>
 

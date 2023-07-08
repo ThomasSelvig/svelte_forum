@@ -86,7 +86,7 @@
     <ContextDropdownModal bind:this={account} relative_to={account_button}>
         <li>
             <a data-sveltekit-preload-data="hover" href={`/user/${$user?.id}`} on:click={() => {
-                account.get_dialog().close()
+                account.close()
             }}>
                 <span class="icon"><MdiPerson /></span>
                 Profile
@@ -95,7 +95,7 @@
         <li>
             <button class="text" on:click={() => {
                 pb.authStore.clear()
-                account.get_dialog().close()
+                account.close()
             }}>
                 <span class="icon"><MdiLogout /></span>
                 Logout
@@ -115,11 +115,11 @@
         <ul class="account_nav">
             {#if $user}
                 <li><button bind:this={notifs_button} class="icon text" on:click={() => {
-                    notifs.get_dialog().showModal()
+                    notifs.open()
                 }}><MdiBell /></button></li>
                 <li><button class="icon text"><MdiMessage  /></button></li>
                 <li><button bind:this={account_button} class="icon text" on:click={() => {
-                    account.get_dialog().showModal()
+                    account.open()
                 }}><MdiAccountBox /></button></li>
             {:else}
                 <li><a data-sveltekit-preload-data="hover" href="/login">LOGIN</a></li>
