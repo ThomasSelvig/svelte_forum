@@ -34,6 +34,7 @@
     import MdiDelete from "~icons/mdi/delete"
 	import Comment from '$lib/components/Comment.svelte';
 	import Avatar from '$lib/components/Avatar.svelte';
+	import PaginatedList from '$lib/components/PaginatedList.svelte';
     
     export let data: PageData;
     const { post } = data
@@ -41,11 +42,12 @@
     let edit_comm: EditCommentModal
     let write_comment_modal: Modal
 
-    let comments = writable(get_comments(post.id))
-    async function get_comments(post: RecordIdString) {
+    let page = 1
+    $: comments = writable(get_comments(post.id, page))
+    async function get_comments(post: RecordIdString, page: number) {
         return pb.collection("comments_public").getList<
             CommentsPublicResponse<{author: UsersPublicResponse}>
-        >(1, 20, {
+        >(page, 20, {
             sort: "+created",
             expand: "author",
             filter: `post = "${post}"`
@@ -57,7 +59,7 @@
         pb.collection("comments").create(get_data_entries(e))
             .then(r => {
                 write_comment_modal.close()
-                $comments = get_comments(post.id)
+                $comments = get_comments(post.id, page)
             })
             .catch(err => {
                 error = err.toString()
@@ -65,7 +67,7 @@
     }
 
     async function refresh_comments() {
-        $comments = get_comments(post.id)
+        $comments = get_comments(post.id, page)
     }
     
 </script>
@@ -127,5 +129,6 @@
             <Comment view_user={comment.expand.author} view_comment={comment} {edit_comm} /> 
             {/if}
         {/each}
+        <PaginatedList list={comments} bind:page={page} />
     {/await}
 </section>

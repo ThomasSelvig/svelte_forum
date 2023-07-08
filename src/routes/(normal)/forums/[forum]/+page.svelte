@@ -8,17 +8,19 @@
 	import { writable } from "svelte/store"
 	import { get_data_entries } from "$lib/helpers";
 	import Loading from "$lib/components/Loading.svelte";
+	import PaginatedList from "$lib/components/PaginatedList.svelte";
     
     export let data: PageData
     let { forum } = data
 
     let write_post_modal: Modal
 
-    let posts = writable(get_posts(forum.id))
-    async function get_posts(forum_id: RecordIdString) {
+    let page = 1
+    $: posts = writable(get_posts(forum.id, page))
+    async function get_posts(forum_id: RecordIdString, page: number) {
         return pb.collection("posts_public").getList<
             PostsPublicResponse<unknown, {author: UsersPublicResponse}>
-        >(1, 20, {
+        >(page, 20, {
             filter: `forum = "${forum_id}"`,
             expand: "author",
             sort: "-updated"
@@ -31,7 +33,7 @@
         pb.collection("posts").create(get_data_entries(e))
             .then(r => {
                 write_post_modal.close()
-                posts.set(get_posts(forum.id))
+                posts.set(get_posts(forum.id, page))
             })
             .catch(err => {
                 error = err.toString()
@@ -70,8 +72,9 @@
     {/if}
 </div>
 
-{#await $posts then postslist}
-    {#each postslist.items as post}
+{#await $posts then posts}
+    {#each posts.items as post}
         <Post {post} />
     {/each}
+    <PaginatedList list={posts} bind:page={page} />
 {/await}

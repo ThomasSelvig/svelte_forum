@@ -8,7 +8,6 @@
 - use built in svelte animations
 - use pocketbase subscribe to collection to update posts
 - replace "Category -> Forum" with proper breadcrumbs
-- implement pagination wherever i use .getList
 
 ## what i've learned
 - TS may be overkill and some prefer JSDoc over all else: maybe replace TS with JSDoc next project

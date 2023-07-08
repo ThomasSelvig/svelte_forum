@@ -5,15 +5,17 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import Post from '$lib/components/Post.svelte';
 	import { pb } from '$lib/pocketbase';
+	import PaginatedList from '$lib/components/PaginatedList.svelte';
     
     export let data: PageData;
     $: req_user_id = data.req_user_id
 
+    let page = 1
     $: posts = writable(
         pb.collection("posts_public").getList<PostsPublicResponse<
             unknown,
             {author: UsersPublicResponse, forum: ForumsResponse}
-        >>(1, 20, {
+        >>(page, 20, {
             filter: `author = "${req_user_id}"`,
             expand: "author,forum",
             sort: "-updated"
@@ -26,4 +28,5 @@
     {#each posts.items as post}
         <Post {post} />
     {/each}
+    <PaginatedList list={posts} bind:page={page} />
 {/await}

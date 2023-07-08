@@ -7,10 +7,12 @@
 	import Comment from '$lib/components/Comment.svelte';
 	import EditCommentModal from '$lib/components/EditCommentModal.svelte';
 	import Loading from '$lib/components/Loading.svelte';
+	import PaginatedList from '$lib/components/PaginatedList.svelte';
     
     export let data: PageData;
     let edit_comm: EditCommentModal
 
+    let page = 1
     let comments = writable<Promise<ListResult<
         CommentsPublicResponse<{
             post: PostsPublicResponse<unknown, {
@@ -28,8 +30,7 @@
         })
     }
 
-    let page = 1
-    load_comments(page)
+    $: load_comments(page)
 </script>
 
 <EditCommentModal bind:this={edit_comm} done_editing_cb={() => {load_comments(page)}} />
@@ -41,4 +42,5 @@
             <Comment view_user={comment.expand.author} view_comment={comment} {edit_comm} />
         {/if}
     {/each}
+    <PaginatedList list={comments} bind:page={page} />
 {/await}
