@@ -19,10 +19,32 @@
 	import PaginatedList from '$lib/components/PaginatedList.svelte';
 	import Post from '$lib/components/Post.svelte';
 	import EditPostModal from '$lib/components/EditPostModal.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
     
     export let data: PageData;
-    const { post } = data
+    let { post } = data
+
+    onMount(() => {
+        // let current_post_unsub = pb.collection("posts_public").subscribe(post.id, data => {
+        //     console.log(data);
+            
+        //     if (data.action == "update") {
+        //         post.title = data.record.title
+        //         post.body = data.record.body
+        //         post.updated = data.record.updated
+
+        //         console.log(post);
+        //         console.log(data.record);
+                
+        //     }
+        // })
+
+        // return async () => {
+        //     // unmount callback
+        //     (await current_post_unsub)();
+        // }
+    })
 
     let edit_comm: EditCommentModal
     let edit_post: EditPostModal
@@ -72,7 +94,9 @@
     </form>
 </Modal>
 
-<EditPostModal {post} done_editing_cb={() => {invalidateAll()}} bind:this={edit_post} />
+<!-- TODO fix bug where the post doesn't refresh afrer editing -->
+<!-- not that important when using live pub/sub from pocketbase, replace goto() later... -->
+<EditPostModal {post} done_editing_cb={() => {goto(".")}} bind:this={edit_post} />
 
 <EditCommentModal bind:this={edit_comm} done_editing_cb={refresh_comments} />
 
@@ -92,7 +116,7 @@
     {#if post.author == $user?.id}
     <span>
         <button class="text" on:click={edit_post.start_edit_post}> <MdiEdit /> </button>
-        <button class="text"> <MdiDelete /> </button>
+        <button class="text" on:click={edit_post.delete_post}> <MdiDelete /> </button>
     </span>
     {/if}
 </Post>

@@ -45,6 +45,7 @@
     export let title: string
 
     let dialog: HTMLDialogElement
+    export let clear_on_close: boolean = true
     
     export function open() {
         dialog.showModal()
@@ -60,7 +61,7 @@
     function on_close() {
         // clear input fields
         let form = dialog.querySelector("form") as HTMLFormElement
-        if (form) {
+        if (form && clear_on_close) {
             for (let field of form.elements as unknown as any[]) {
                 if (field.type != "hidden") {
                     field.value = ""

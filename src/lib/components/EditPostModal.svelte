@@ -28,8 +28,8 @@
         edit_post_modal.open()
     }
 
-    export function delete_comment(comment: CommentsResponse) {
-        pb.collection("comments").delete(comment.id)
+    export function delete_post() {
+        pb.collection("posts").delete(post.id)
             .then(r => {done_editing_cb()})
     }
 
@@ -37,7 +37,7 @@
 </script>
 
 
-<Modal title="Edit Post" bind:this={edit_post_modal}>
+<Modal title="Edit Post" bind:this={edit_post_modal} clear_on_close={false}>
     <form method="post" on:submit|preventDefault={edit_post}>
         <label>
             Title *
