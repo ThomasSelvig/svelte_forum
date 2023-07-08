@@ -1,10 +1,8 @@
 <script lang="ts">
 	import type { ListResult } from "pocketbase";
-	import { createEventDispatcher } from "svelte";
 
     export let list: ListResult<any>
     export let page: number
-    // let dispatch = createEventDispatcher<{page_change: number}>()
 </script>
 
 <!-- 
@@ -40,10 +38,7 @@
     {#each {length: list.totalItems / list.perPage} as _, i}
         {@const page_i = i+1}
 
-        <button class="icon" on:click={() => 
-            // dispatch("page_change", page_i)
-            {page = page_i}
-        }>{page_i}</button>
+        <button class="icon" on:click={ () => {page = page_i} }>Page {page_i}</button>
 
     {/each}
 </div>

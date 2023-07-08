@@ -10,13 +10,13 @@
     
     export let data: PageData;
 
+    let page = 1
     let posts = writable<Promise<ListResult<
         PostsPublicResponse<unknown, {
             forum: ForumsResponse,
             author: UsersPublicResponse
         }>
     >>>()
-    let page = 1
 
     function load_posts(page: number) {
         $posts = pb.collection("posts_public").getList(page, 2, {
@@ -34,7 +34,6 @@
     {#each posts.items as post}
         <Post {post} />
     {/each}
-    <!-- <PaginatedList list={posts} on:page_change={new_page => {page = new_page.detail}} /> -->
     <PaginatedList list={posts} bind:page={page} />
 
 {/await}
