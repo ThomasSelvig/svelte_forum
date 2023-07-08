@@ -68,6 +68,9 @@
             <a href={`/forums/${post.forum}/${post.id}`}>
                 <h2>{post.title}</h2>
             </a>
+            {#if post.body}
+            <p>{post.body}</p>
+            {/if}
         </div>
     </div>
 </div>
