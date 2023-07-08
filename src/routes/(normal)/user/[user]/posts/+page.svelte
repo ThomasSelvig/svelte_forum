@@ -19,7 +19,7 @@
     >>>()
 
     function load_posts(page: number) {
-        $posts = pb.collection("posts_public").getList(page, 2, {
+        $posts = pb.collection("posts_public").getList(page, 20, {
             filter: `author="${data.req_user_id}"`,
             sort: "-created",
             expand: "forum,author"

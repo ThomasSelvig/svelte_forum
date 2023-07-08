@@ -1,3 +1,19 @@
+<style lang="scss">
+    .page_buttons, .meta {
+        margin-top: 1rem;
+    }
+
+    .page_buttons {
+        display: flex;
+
+        & > button {
+            padding: .33rem .5rem;
+            margin-right: .5rem;
+            display: inline-block;
+        }
+    }
+</style>
+
 <script lang="ts">
 	import type { ListResult } from "pocketbase";
 
