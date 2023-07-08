@@ -1,23 +1,6 @@
 <style lang="scss">
-    .post {
-        padding: 1rem;
-        background: $main_background;
-    }
-    .post > .title_bar {
-        margin-bottom: 1rem;
-    }
     .comments {
         margin: 2rem 0 0 0;
-    }
-    .meta {
-        flex-basis: 58%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        & * {
-            flex-basis: 20%;
-            text-align: center;
-        }
     }
 </style>
 
@@ -33,14 +16,16 @@
     import MdiEdit from "~icons/mdi/edit"
     import MdiDelete from "~icons/mdi/delete"
 	import Comment from '$lib/components/Comment.svelte';
-	import Avatar from '$lib/components/Avatar.svelte';
 	import PaginatedList from '$lib/components/PaginatedList.svelte';
 	import Post from '$lib/components/Post.svelte';
+	import EditPostModal from '$lib/components/EditPostModal.svelte';
+	import { invalidateAll } from '$app/navigation';
     
     export let data: PageData;
     const { post } = data
 
     let edit_comm: EditCommentModal
+    let edit_post: EditPostModal
     let write_comment_modal: Modal
 
     let page = 1
@@ -87,6 +72,8 @@
     </form>
 </Modal>
 
+<EditPostModal {post} done_editing_cb={() => {invalidateAll()}} bind:this={edit_post} />
+
 <EditCommentModal bind:this={edit_comm} done_editing_cb={refresh_comments} />
 
 <div class="title_bar">
@@ -104,35 +91,11 @@
     <!-- edit controls -->
     {#if post.author == $user?.id}
     <span>
-        <button class="text"> <MdiEdit /> </button>
+        <button class="text" on:click={edit_post.start_edit_post}> <MdiEdit /> </button>
         <button class="text"> <MdiDelete /> </button>
     </span>
     {/if}
 </Post>
-
-                <!-- By -->
-                <!-- {#if post.expand}<Avatar view_user={post.expand.author} size="3rem" />{/if} -->
-<!-- <article class="post">
-    <div class="title_bar">
-        <h3>{post.title}</h3>
-        <div class="meta">
-            <span>
-                <a href={`/user/${post.expand?.author.id}`}>
-                    {post.expand?.author.username}
-                </a>
-            </span>
-            <span>In <a href=".">{post.expand?.forum.name}</a></span>
-            <span>{calc_time_diff(post.updated)}</span>
-            {#if post.author == $user?.id}
-                <span>
-                    <button class="text"> <MdiEdit /> </button>
-                    <button class="text"> <MdiDelete /> </button>
-                </span>
-            {/if}
-        </div>
-    </div>
-    {#if post.body}<p>{post.body}</p>{/if}
-</article> -->
 
 <section class="comments">
     <h2>Comments {#await $comments}<Loading />{/await}</h2>
