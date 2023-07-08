@@ -10,6 +10,7 @@
 - replace "Category -> Forum" with proper breadcrumbs
 
 ## what i've learned
+- you can use "gap: 10px" with flexbox and not just grid
 - TS may be overkill and some prefer JSDoc over all else: maybe replace TS with JSDoc next project
 - if using TS, use pocketbase-typegen on npm
 - svelte syntax like "{#each}" works terribly with TS because svelte-check doesn't support it

@@ -36,7 +36,7 @@
         {#if post.expand && "author" in post.expand}
         <div class="author">
             <a href={`/user/${post.expand.author.id}`}>
-                <Avatar margin=".5rem .5rem .5rem 0" size="1.5rem" view_user={post.expand.author}/>
+                <Avatar margin="0 .5rem 0 0" size="1.8rem" view_user={post.expand.author}/>
                 {post.expand.author.username}
             </a>
         </div>
@@ -50,6 +50,9 @@
 
         <!-- time since last update -->
         <span>{calc_time_diff(post.updated)}</span>
+
+        <!-- any child elements are extra meta to show -->
+        <slot />
     </div>
 
     <div class="post">

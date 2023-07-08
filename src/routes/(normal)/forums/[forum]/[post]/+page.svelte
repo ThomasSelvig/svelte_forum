@@ -35,6 +35,7 @@
 	import Comment from '$lib/components/Comment.svelte';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import PaginatedList from '$lib/components/PaginatedList.svelte';
+	import Post from '$lib/components/Post.svelte';
     
     export let data: PageData;
     const { post } = data
@@ -97,13 +98,25 @@
     {/if}
 </div>
 
-<article class="post">
+<Post {post}>
+    <!-- children of Post are extra meta info -->
+    <span>Created {calc_time_diff(post.created)}</span>
+    <!-- edit controls -->
+    {#if post.author == $user?.id}
+    <span>
+        <button class="text"> <MdiEdit /> </button>
+        <button class="text"> <MdiDelete /> </button>
+    </span>
+    {/if}
+</Post>
+
+                <!-- By -->
+                <!-- {#if post.expand}<Avatar view_user={post.expand.author} size="3rem" />{/if} -->
+<!-- <article class="post">
     <div class="title_bar">
         <h3>{post.title}</h3>
         <div class="meta">
             <span>
-                <!-- By -->
-                <!-- {#if post.expand}<Avatar view_user={post.expand.author} size="3rem" />{/if} -->
                 <a href={`/user/${post.expand?.author.id}`}>
                     {post.expand?.author.username}
                 </a>
@@ -119,7 +132,7 @@
         </div>
     </div>
     {#if post.body}<p>{post.body}</p>{/if}
-</article>
+</article> -->
 
 <section class="comments">
     <h2>Comments {#await $comments}<Loading />{/await}</h2>
