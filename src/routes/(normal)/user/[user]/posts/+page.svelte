@@ -12,7 +12,7 @@
 
     let page = 1
     let posts = writable<Promise<ListResult<
-        PostsPublicResponse<unknown, {
+        PostsPublicResponse<number, {
             forum: ForumsResponse,
             author: UsersPublicResponse
         }>

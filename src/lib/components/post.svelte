@@ -7,16 +7,53 @@
     import MdiPlus from '~icons/mdi/plus'
     import MdiMinus from '~icons/mdi/minus'
     import MdiSubdirectoryArrowRight  from "~icons/mdi/subdirectory-arrow-right"
-	import type { ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
+    import type { PostVotesResponse, ForumsResponse, PostsPublicResponse, UsersPublicResponse } from "$lib/pocketbase-types";
 	import { calc_time_diff } from '$lib/helpers';
 	import Avatar from './Avatar.svelte';
+	import { writable } from 'svelte/store';
+	import { pb, user } from '$lib/pocketbase';
 
     export let post: PostsPublicResponse<
-        unknown,
+        number,
         {author: UsersPublicResponse, forum: ForumsResponse} |
         {author: UsersPublicResponse}
     >
 
+    let user_vote = writable<PostVotesResponse | null>(null)
+    async function load_user_vote() {
+        try {
+            $user_vote = await pb.collection("post_votes").getFirstListItem(
+                `user="${$user?.id}" && post="${post.id}"`
+            )
+        } catch (error) {}
+    }
+
+    async function cast_vote(vote: number) {
+        // TODO trycatch telling user to log in on error
+        if ($user_vote) {
+            // found vote to update, toggle if vote is the same, else set it to new vote
+            await pb.collection("post_votes").update($user_vote.id, {
+                vote: vote == $user_vote.vote ? 0 : vote
+            })
+        }
+        else {
+            // create new vote
+            await pb.collection("post_votes").create({
+                user: $user?.id,
+                post: post.id,
+                vote: vote
+            })
+        }
+        await load_user_vote()
+    }
+
+    let onload_user_score = writable<number>(0)
+    load_user_vote()
+        .then(_ => {
+            if ($user_vote) {
+                $onload_user_score = $user_vote.vote  // + or - the shown score
+            }
+        })
 </script>
 
 <div class="container">
@@ -58,9 +95,18 @@
     <div class="post">
         <!-- left bar -->
         <div class="controls">
-            <button class="icon text"><MdiPlus /></button>
-            <pre>{post.score}</pre>
-            <button class="icon text"><MdiMinus /></button>
+            <button class="icon text {$user_vote?.vote == 1 ? "voted" : ""}" on:click={() => {
+                cast_vote(1)
+            }}>
+                <MdiPlus />
+            </button>
+            <!-- would be just {post.score}, the rest is to account for local update of score on click -->
+            <pre>{Number(post.score||0) + (($user_vote?.vote||0) - $onload_user_score)}</pre>
+            <button class="icon text {$user_vote?.vote == -1 ? "voted" : ""}" on:click={() => {
+                cast_vote(-1)
+            }}>
+                <MdiMinus />
+            </button>
         </div>
 
         <!-- post content -->
@@ -99,6 +145,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        .voted {
+            color: $alt_text;
+        }
     }
 
     .content {

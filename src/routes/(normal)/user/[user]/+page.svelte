@@ -13,7 +13,7 @@
     let page = 1
     $: posts = writable(
         pb.collection("posts_public").getList<PostsPublicResponse<
-            unknown,
+            number,
             {author: UsersPublicResponse, forum: ForumsResponse}
         >>(page, 20, {
             filter: `author = "${req_user_id}"`,
@@ -23,7 +23,7 @@
     )
 </script>
 
-<h2>Latest Posts {#await $posts}<Loading />{/await}</h2>
+<h2 class="title_bar">Latest Posts {#await $posts}<Loading />{/await}</h2>
 {#await $posts then posts}
     {#each posts.items as post}
         <Post {post} />

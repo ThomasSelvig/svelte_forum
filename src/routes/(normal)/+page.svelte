@@ -11,7 +11,7 @@
     $: posts = writable(get_latest_posts(page))
     async function get_latest_posts(page: number) {
         return pb.collection("posts_public").getList<
-            PostsPublicResponse<unknown, {author: UsersPublicResponse, forum: ForumsResponse}>
+            PostsPublicResponse<number, {author: UsersPublicResponse, forum: ForumsResponse}>
         > (1, 20, {
             expand: "forum,author",
             sort: "-updated"
@@ -20,7 +20,7 @@
 </script>
 
 
-<h1>Latest posts {#await $posts}<Loading />{/await}</h1>
+<h1 class="title_bar">Latest posts {#await $posts}<Loading />{/await}</h1>
 
 {#await $posts then posts}
     {#each posts.items as post}

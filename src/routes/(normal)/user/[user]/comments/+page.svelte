@@ -15,7 +15,7 @@
     let page = 1
     let comments = writable<Promise<ListResult<
         CommentsPublicResponse<{
-            post: PostsPublicResponse<unknown, {
+            post: PostsPublicResponse<number, {
                 forum: ForumsResponse
             }>,
             author: UsersPublicResponse

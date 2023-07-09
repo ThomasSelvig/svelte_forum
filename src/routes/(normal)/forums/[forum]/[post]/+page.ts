@@ -6,7 +6,7 @@ export const load = (async ({ params }) => {
     return {
         post: await pb.collection("posts_public")
             .getOne<
-                PostsPublicResponse<unknown, {author: UsersPublicResponse, forum: ForumsResponse}>
+                PostsPublicResponse<number, {author: UsersPublicResponse, forum: ForumsResponse}>
             >(params.post, {expand: "author,forum"})
     }
 }) satisfies PageLoad

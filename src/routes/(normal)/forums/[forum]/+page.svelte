@@ -19,7 +19,7 @@
     $: posts = writable(get_posts(forum.id, page))
     async function get_posts(forum_id: RecordIdString, page: number) {
         return pb.collection("posts_public").getList<
-            PostsPublicResponse<unknown, {author: UsersPublicResponse}>
+            PostsPublicResponse<number, {author: UsersPublicResponse}>
         >(page, 20, {
             filter: `forum = "${forum_id}"`,
             expand: "author",
